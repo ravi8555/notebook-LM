@@ -14,7 +14,7 @@ import { QdrantClient } from '@qdrant/js-client-rest';
 const COLLECTION_NAME = "notebook-Lm-col";
 
 export class QdrantVectorStore implements VectorStore {
-    private client = new QdrantClient({ url: process.env.QDRANT_URL })
+    private client = new QdrantClient({ url: process.env.QDRANT_URL, apiKey: process.env.QDRANT_API_KEY })
 
 //   private readonly client = qdrant;
 
