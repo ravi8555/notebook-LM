@@ -1,0 +1,351 @@
+1
+00:00:00,000 --> 00:00:10,000
+1 1.) What is the React ? => React is an open-source JavaScript library for building user interfaces => Component-Based Structure: => Virtual DOM: =>
+
+2
+00:00:10,000 --> 00:00:20,000
+One-Way Data Flow: (from parent to child components) => JSX (JavaScript XML): 2.) What are the key feature of React ? => Component-Based Architecture: (React
+
+3
+00:00:20,000 --> 00:00:30,000
+organizes the UI into small, reusable components, each managing its own state.) => Virtual DOM: (React uses a virtual DOM to update only the parts
+
+4
+00:00:30,000 --> 00:00:40,000
+of the UI that have changed, rather than re-rendering the entire DOM.) => One-Way Data Binding: ( React follows a unidirectional data flow, making the
+
+5
+00:00:40,000 --> 00:00:50,000
+data more predictable and easier to debug. This structure helps in managing the state and logic within the application.) => JSX (JavaScript XML): (JSX is
+
+6
+00:00:50,000 --> 00:01:00,000
+a syntax extension that allows you to write HTML-like code directly in JavaScript.) => Declarative UI: ( React follows a declarative paradigm, where you describe
+
+7
+00:01:00,000 --> 00:01:10,000
+the desired state of your UI, and React handles the updates automatically.) => State Management: (React's built-in useState and useReducer hooks, along with Context API,
+
+8
+00:01:10,000 --> 00:01:20,000
+help manage application state.) => Hooks: Introduced in React 16.8, hooks allow you to use state and lifecycle features in functional components, which were previously
+
+9
+00:01:20,000 --> 00:01:30,000
+only available in class components. => React Router: Though not a part of React itself, React Router is often used with it for managing navigation
+
+10
+00:01:30,000 --> 00:01:40,000
+and routes within single-page applications => Cross-Platform Development: With React Native, React code can be used to build mobile applications for iOS and Android using
+
+11
+00:01:40,000 --> 00:01:50,000
+the same concepts and components. 3.) Explain the differences between Real Dom and Virtual Dom Real Dom Actual representation in the browser - Nature -
+
+12
+00:01:50,000 --> 00:02:00,000
+Updates immediately with every change - Update Approach - Slower, especially for frequent updates - Performance - Re-renders all affected nodes - Re-rendering - Managed
+
+13
+00:02:00,000 --> 00:02:10,000
+by the browser - Usage - Virtual Dom In-memory copy of the Real DOM - Nature - Updates in batches by comparing changes - Update
+
+14
+00:02:10,000 --> 00:02:20,000
+Approach - Faster, by minimizing real DOM updates - Performance - Only re-renders changed nodes - Re-rendering - Managed by React for optimizing updates -
+
+15
+00:02:20,000 --> 00:02:30,000
+Usage- 2 4.) What are the Limitation of react ? While React is powerful, it also has some limitations and challenges: a)Learning Curve for Beginners
+
+16
+00:02:30,000 --> 00:02:40,000
+b)Complex State Management in Large Applications c)SEO Challenges d)Heavy Initial Setup for Complex Apps e)High Pace of Development f)Limited Built-In Functionality g) Poor Support for
+
+17
+00:02:40,000 --> 00:02:50,000
+Older Browsers h)Performance Issues with Large Applications i)JSX as a Barrier for Designers j)Memory Usage for Virtual DOM 5.)What is the JSX ? JSX (JavaScript
+
+18
+00:02:50,000 --> 00:03:00,000
+XML) is a syntax extension for JavaScript that resembles HTML. It’s used in React to describe what the UI should look like. JSX allows developers
+
+19
+00:03:00,000 --> 00:03:10,000
+to write HTML-like code directly within JavaScript, which React then compiles into JavaScript code to create and manipulate the DOM. 6.)What are the component ?
+
+20
+00:03:10,000 --> 00:03:20,000
+Components are the fundamental building blocks of React applications. They are reusable pieces of code that encapsulate a specific part of the UI, making your
+
+21
+00:03:20,000 --> 00:03:30,000
+code more organized, modular, and easier to maintain. 1. Functional Components: Defined as simple JavaScript functions that take props as input and return a JSX
+
+22
+00:03:30,000 --> 00:03:40,000
+element representing the component's UI. Typically used for stateless components that don't require internal state. 2. Class Components: Defined using JavaScript classes that extend the
+
+23
+00:03:40,000 --> 00:03:50,000
+React.Component class. Can have state, lifecycle methods, and other features for more complex components. 3. Stateless Functional Components (SFCs): A special type of functional component
+
+24
+00:03:50,000 --> 00:04:00,000
+that is optimized for performance. They are often preferred over class components for simple, stateless components. 4. Higher-Order Components (HOCs): Functions that take a component
+
+25
+00:04:00,000 --> 00:04:10,000
+as input and return a new component with enhanced capabilities. Used for common patterns like data fetching, error handling, and conditional rendering. 5. Pure Components:
+
+26
+00:04:10,000 --> 00:04:20,000
+A type of component that performs shallow comparison of props and state to determine if a re-render is necessary. Can improve performance by avoiding unnecessary
+
+27
+00:04:20,000 --> 00:04:30,000
+re-renders. 3 6. Custom Hooks: Reusable functions that encapsulate state and logic within functional components. Provide a way to share custom logic between components without
+
+28
+00:04:30,000 --> 00:04:40,000
+creating class components. 7.)Why Browser cant read the JSX ? Browsers cannot directly read JSX because it's a syntax extension for JavaScript, not a standard
+
+29
+00:04:40,000 --> 00:04:50,000
+language feature. JSX is a more readable way to define UI elements in JavaScript, but browsers only understand plain JavaScript. 8.) What are the difference
+
+30
+00:04:50,000 --> 00:05:00,000
+between the class component and functional component ? A.) Class-Base-Component =>Extend React.Component =>Have their own state using [this.state] =>Have a built in lifecycle method =>Typically
+
+31
+00:05:00,000 --> 00:05:10,000
+require the constructor =>Can receive props from the parent components B.) Funational Component =>Regular Javascript component =>No internal state =>No Lifecycle method =>No construnctor needed
+
+32
+00:05:10,000 --> 00:05:20,000
+=>Receive props from the parent components 9.) What are the difference between uncontrolled and controlled component Controlled Components => Directly managed by the parent component
+
+33
+00:05:20,000 --> 00:05:30,000
+=> Receives value prop => Parent component's state => Parent component handles changes Uncontrolled Components => Managed by their own internal state => doesn't receive
+
+34
+00:05:30,000 --> 00:05:40,000
+a value prop from the parent. => Controlled by internal state => The component listens for change events and updates its own state. 10.) what
+
+35
+00:05:40,000 --> 00:05:50,000
+is the difference between the state and props ? => State and props are two fundamental concepts in React components that serve different purposes: STATE
+
+36
+00:05:50,000 --> 00:06:00,000
+=>State is used to store data that belongs to a specific component and can change over time. It's like the component's memory. =>When the state
+
+37
+00:06:00,000 --> 00:06:10,000
+of a component changes, React re-renders the component to reflect the updated data. 4 => State is declared and managed within the component itself using
+
+38
+00:06:10,000 --> 00:06:20,000
+the this.state object in class components or the useState hook in functional components. PROPS =>Props are data passed down from a parent component to a
+
+39
+00:06:20,000 --> 00:06:30,000
+child component. They're like arguments to a function. =>Props are generally considered immutable within the child component. If you need to modify them, you should
+
+40
+00:06:30,000 --> 00:06:40,000
+update the parent component's state. => Props are used for communication between components, allowing data to flow from parent to child. 11.) How do useState
+
+41
+00:06:40,000 --> 00:06:50,000
+and useEffect works in react ? useState: =>used to manage state within function components Takes an initial state value and returns a pair of values:
+
+42
+00:06:50,000 --> 00:07:00,000
+the current state and a function to update the sate. useEffect: => useEffect runs asynchronously after the browser has painted. Wont block the browser from
+
+43
+00:07:00,000 --> 00:07:10,000
+updated and loading Dom => useEffect hooks is used to fetch the data from API and update the components state. => the empty dependency array
+
+44
+00:07:10,000 --> 00:07:20,000
+[] indicates that the effect should run only once after the components is mounted. => if you want the effect to run whenever a dependency
+
+45
+00:07:20,000 --> 00:07:30,000
+changes, inculde those dependency in array 12.) what is the important key in react ? => Components: => JSX => Virtual DOM => State and
+
+46
+00:07:30,000 --> 00:07:40,000
+props => Hooks => Lifecycle methods => Conditional Rendering => Lists and Keys => Forms => Event handaling => Context API => Fragments => Portals
+
+47
+00:07:40,000 --> 00:07:50,000
+=> Higer Order Components 13.) explain the concept of lifting the stateup in react ? => Lifting State Up is a common pattern in React
+
+48
+00:07:50,000 --> 00:08:00,000
+where you move shared state and logic to a common ancestor component that can manage it for its descendants. => By understanding and applying the
+
+49
+00:08:00,000 --> 00:08:10,000
+concept of lifting state up, you can create more organized, maintainable, and scalable React applications. 5 14)What are the Hooks in React? Name of common
+
+50
+00:08:10,000 --> 00:08:20,000
+hooks => Hooks are functions that let you use React features like state and lifecycle methods without writing a class component. COMMON HOOKS 1. useState:
+
+51
+00:08:20,000 --> 00:08:30,000
+=> Used to manage state within functional components. Takes an initial state value and returns a pair of values: the current state and a function
+
+52
+00:08:30,000 --> 00:08:40,000
+to update the state. For managing simple state values. 2. useEffect: => Used to perform side effects in functional components, such as data fetching, subscriptions,
+
+53
+00:08:40,000 --> 00:08:50,000
+or DOM manipulations. Takes a callback function and an optional dependency array. The callback function is executed after the component is rendered and whenever the
+
+54
+00:08:50,000 --> 00:09:00,000
+dependencies change. 3.useContext: => used to access values from a context provider without passing props through intermediate components 4.useReducer: => An alternative to useState for
+
+55
+00:09:00,000 --> 00:09:10,000
+managing complex state logic. It takes a reducer function and an initial state value. 5. useRef: => Used to create a mutable ref object that
+
+56
+00:09:10,000 --> 00:09:20,000
+can be accesed from a functional component. 6. useCallback: => memorizes a callback function, preventing unnecessary re-renders if its dependencies haven't changed. 7. useMemo: =>
+
+57
+00:09:20,000 --> 00:09:30,000
+memorize a value, preventing unnecessary re-calculations if its dependencies haven't changed. 8. useImperativeHandle: => Exposes a custom ref to a parent component, allowing the parent
+
+58
+00:09:30,000 --> 00:09:40,000
+to access or manipulate the child component's internal state or methods. 9. useLayoutEffect: => Similar to useEffect but runs after DOM mutations. => useLayoutEffect runs
+
+59
+00:09:40,000 --> 00:09:50,000
+synchronously its block browser visual update until its callback has completed 10. useTransition: => Helps manage state transitions that might cause visual glithces it returs
+
+60
+00:09:50,000 --> 00:10:00,000
+a startTransition function and a isPending boolean. 15.) How does one pass data between components in React ? => Passing data between components in React
+
+61
+00:10:00,000 --> 00:10:10,000
+is a fundamental aspect of building complex applications. There are primarily two methods to achieve this: 1. Props 2. Context API: 6 16.) What are
+
+62
+00:10:10,000 --> 00:10:20,000
+the new features introduce in React-18 1. Suspense: => Data fetching and rendering: Suspense allows components to declaratively wait for data to be fetched before
+
+63
+00:10:20,000 --> 00:10:30,000
+rendering, improving user experience and reducing complexity. => Concurrent rendering: Suspense enables concurrent rendering, where multiple components can render and update simultaneously, leading to better
+
+64
+00:10:30,000 --> 00:10:40,000
+perceived performance. 2.Automatic batching: => Optimized updates: React now automatically batches state updates within the single render pass, reducing unnecessary re-renders and improving the performance.
+
+65
+00:10:40,000 --> 00:10:50,000
+3. Client-side rendering (CSR) improvements: => Faster initial render : React 18 has optimization for faster initial rendering, especially in large appication => Streaming: Improved
+
+66
+00:10:50,000 --> 00:11:00,000
+streaming capabilities allow for progessive rendering for content, providing the better experience. 4. Server-side rendering (SSR) improvements: => faster initial page load : react 18
+
+67
+00:11:00,000 --> 00:11:10,000
+has enhancements for faster SSR, leading to quicker initial page loads. => Streaming SSR: Improved streaming support for SSR allows foo progressive rendering on the
+
+68
+00:11:10,000 --> 00:11:20,000
+server side, enhancing performance. 5. New Hooks : => useTransition: Provides a way to manage state transitions that might cause visula glitches. => useDeferredValue :
+
+69
+00:11:20,000 --> 00:11:30,000
+Defer updates to a value untill the browser is less busy improving perceived performance. => useSyncExternalStore : allow for more efficient integration with external state
+
+70
+00:11:30,000 --> 00:11:40,000
+management. 6. Strick Mode: => improved code quality : Strick mode helpe identify potential issues in your code, such as missign dependenciews or incorrect lifecycle
+
+71
+00:11:40,000 --> 00:11:50,000
+methods. 7. Component updates: => More granular updates : React 18 provide the more granual control over components updates, allowing for fine tuning performance nad
+
+72
+00:11:50,000 --> 00:12:00,000
+behavior. 17.)What is the concurrent rendering in react 18 ? => Concurrent Rendering is a significant feature introduced in React 18 that enables multiple components
+
+73
+00:12:00,000 --> 00:12:10,000
+to render and update simultaneously, improving perceived performance and user experience. 18.) How does automatic batching works in React-18 ? => Automatic batching is a
+
+74
+00:12:10,000 --> 00:12:20,000
+significant performance optimization introduced in React 18. It aims to reduce the number of unnecessary re-renders by grouping multiple state updates within a single render
+
+75
+00:12:20,000 --> 00:12:30,000
+pass. 7 19.) Explain the useDeferredValue in React 18 ? => useDeferredValue is a React hook introduced in React 18 that helps improve preceived performance
+
+76
+00:12:30,000 --> 00:12:40,000
+by deferring updates to a value untill the browser is less busy. This is perticular use for non-critical updates that can be delayed without affecting
+
+77
+00:12:40,000 --> 00:12:50,000
+the user experience. 20.) What is the useTransition hooks in react 18 => useTransitoin hooks introduce in version 18 that helps manage state transtions that
+
+78
+00:12:50,000 --> 00:13:00,000
+might cause visiual glithches or performance issues. 21.) What is the suspense and how does it works ? => Suspense is the new feature introduced
+
+79
+00:13:00,000 --> 00:13:10,000
+in React that allow components declaratively wait for data to be fetched before rendering. This improve user experience by preventing blank screens or loading spinners
+
+80
+00:13:10,000 --> 00:13:20,000
+while data is being fetched. Suspense is a declarative way to handal data fetching and loading states. It improves user experience by providing a more
+
+81
+00:13:20,000 --> 00:13:30,000
+seamless transition between loading and rendered content. You can use Suspense with any data fetching mechanism. It's important to handle errors and provide appropriate fallback
+
+82
+00:13:30,000 --> 00:13:40,000
+content. Concurrent Rendering: Suspense is tightly integrated with React's new concurrent rendering feature. 22.)How has React 18 improved suspense ? 1.Concurrent Rendering: =>Suspense is tightly
+
+83
+00:13:40,000 --> 00:13:50,000
+integrated with React's new concurrent rendering feature. 2.Fallback UI: =>React 18 introduces a new fallback prop for Suspense components. 3.Error boundaries: =>Suspense can be used
+
+84
+00:13:50,000 --> 00:14:00,000
+in conjunction with error boundaries to catch errors that occur during data fetching or rendering. 4.Improved streaming: =>React 18 has improved streaming capabilities for both
+
+85
+00:14:00,000 --> 00:14:10,000
+client-side rendering (CSR) and server-side rendering (SSR). 5.Integration with other features: =>Suspense works seamlessly with other React features like hooks, context, and reducers, 23.) What
+
+86
+00:14:10,000 --> 00:14:20,000
+is the new startTransition function in React ? =>startTransition allows you to defer updates to a state value until the browser is less busy, improving
+
+87
+00:14:20,000 --> 00:14:30,000
+perceived performance and reducing visual glitches. => By deferring updates, startTransition can improve the perceived performance of your application. => You can use the pending
+
+88
+00:14:30,000 --> 00:14:40,000
+value to provide a loading indicator or other visual feedback while the transition is in progress.

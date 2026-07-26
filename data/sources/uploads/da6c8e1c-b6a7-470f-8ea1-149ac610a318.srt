@@ -1,0 +1,1783 @@
+1
+00:00:00,000 --> 00:00:05,000
+Hey there everyone. In case you haven't
+
+2
+00:00:02,000 --> 00:00:08,000
+heard it yet, let me explain it to you.
+
+3
+00:00:05,000 --> 00:00:09,000
+Open AI just hacked Hugging Face. And
+
+4
+00:00:08,000 --> 00:00:12,000
+you might be wondering
+
+5
+00:00:09,000 --> 00:00:14,000
+why would anybody in their sane mind,
+
+6
+00:00:12,000 --> 00:00:16,000
+and especially the company like Open AI,
+
+7
+00:00:14,000 --> 00:00:18,000
+would go ahead and hack Hugging Face. In
+
+8
+00:00:16,000 --> 00:00:20,000
+case you don't know, Hugging Face is one
+
+9
+00:00:18,000 --> 00:00:22,000
+of the most popular name in the AI
+
+10
+00:00:20,000 --> 00:00:25,000
+ecosystem. They manage a lot of models.
+
+11
+00:00:22,000 --> 00:00:26,000
+They have their own benchmarking things,
+
+12
+00:00:25,000 --> 00:00:29,000
+and they closely work with every single
+
+13
+00:00:26,000 --> 00:00:30,000
+model that is available in the market.
+
+14
+00:00:29,000 --> 00:00:32,000
+In this video, I will walk you through
+
+15
+00:00:30,000 --> 00:00:35,000
+the entire story, the lessons we can
+
+16
+00:00:32,000 --> 00:00:38,000
+learn as cyber security measures, or
+
+17
+00:00:35,000 --> 00:00:40,000
+rather I would say AI security measures,
+
+18
+00:00:38,000 --> 00:00:41,000
+and work around with that.
+
+19
+00:00:40,000 --> 00:00:45,000
+We should all understand that AI comes
+
+20
+00:00:41,000 --> 00:00:47,000
+with a lot of security implications, and
+
+21
+00:00:45,000 --> 00:00:48,000
+we should be a little worried about it.
+
+22
+00:00:47,000 --> 00:00:50,000
+So, let me take you onto the screen
+
+23
+00:00:48,000 --> 00:00:52,000
+because I have these images which I have
+
+24
+00:00:50,000 --> 00:00:54,000
+generated for every scenario. It took me
+
+25
+00:00:52,000 --> 00:00:56,000
+a lot of time to generate these images,
+
+26
+00:00:54,000 --> 00:00:59,000
+but this will help us to understand
+
+27
+00:00:56,000 --> 00:01:01,000
+everything in a very, very easy way. And
+
+28
+00:00:59,000 --> 00:01:03,000
+when it comes to the images, of course,
+
+29
+00:01:01,000 --> 00:01:05,000
+we have to thank our sponsor, ImageKit,
+
+30
+00:01:03,000 --> 00:01:07,000
+as well. By the way, there's a very fun
+
+31
+00:01:05,000 --> 00:01:10,000
+interesting uh we use ImageKit for all
+
+32
+00:01:07,000 --> 00:01:12,000
+of managing our images. Uh these images,
+
+33
+00:01:10,000 --> 00:01:13,000
+yes, we manage them through ImageKit, as
+
+34
+00:01:12,000 --> 00:01:15,000
+well. And there's a very interesting
+
+35
+00:01:13,000 --> 00:01:19,000
+thing. I can click on new. I can go into
+
+36
+00:01:15,000 --> 00:01:23,000
+generate images, and I can just say uh
+
+37
+00:01:19,000 --> 00:01:26,000
+in here that hey, Open AI
+
+38
+00:01:23,000 --> 00:01:27,000
+just hacked
+
+39
+00:01:26,000 --> 00:01:29,000
+Hugging
+
+40
+00:01:27,000 --> 00:01:30,000
+Face.
+
+41
+00:01:29,000 --> 00:01:33,000
+Let's see what kind of image it
+
+42
+00:01:30,000 --> 00:01:35,000
+generates. Uh this is a newly added
+
+43
+00:01:33,000 --> 00:01:37,000
+feature, and I can add anything and
+
+44
+00:01:35,000 --> 00:01:39,000
+generate all these things. Uh there's a
+
+45
+00:01:37,000 --> 00:01:41,000
+lot of fun stuff with the ImageKit that
+
+46
+00:01:39,000 --> 00:01:43,000
+you can go ahead and try. I have created
+
+47
+00:01:41,000 --> 00:01:45,000
+a lot of videos around next years, how
+
+48
+00:01:43,000 --> 00:01:47,000
+you can utilize them. Their AI feature
+
+49
+00:01:45,000 --> 00:01:50,000
+is really nice, where you can just in
+
+50
+00:01:47,000 --> 00:01:52,000
+the URL can remove the background of the
+
+51
+00:01:50,000 --> 00:01:54,000
+images, can transform it into variety of
+
+52
+00:01:52,000 --> 00:01:57,000
+shapes. It automatically detects where
+
+53
+00:01:54,000 --> 00:01:58,000
+the important part is. Uh which one do
+
+54
+00:01:57,000 --> 00:02:00,000
+you like?
+
+55
+00:01:58,000 --> 00:02:04,000
+I think this one. I can just click it,
+
+56
+00:02:00,000 --> 00:02:06,000
+save it to file name would be
+
+57
+00:02:04,000 --> 00:02:08,000
+OpenAI.
+
+58
+00:02:06,000 --> 00:02:10,000
+Uh let's just say
+
+59
+00:02:08,000 --> 00:02:13,000
+this should be available to my media.
+
+60
+00:02:10,000 --> 00:02:16,000
+This one is also pretty cool. I can just
+
+61
+00:02:13,000 --> 00:02:18,000
+say this one is going to be OpenAI 2.
+
+62
+00:02:16,000 --> 00:02:20,000
+All right, that's pretty cool. Go ahead,
+
+63
+00:02:18,000 --> 00:02:22,000
+try it out. They uh they have a generous
+
+64
+00:02:20,000 --> 00:02:25,000
+free tier plan. They help us
+
+65
+00:02:22,000 --> 00:02:26,000
+a lot of developers in building products
+
+66
+00:02:25,000 --> 00:02:28,000
+and YouTubers like us to create more
+
+67
+00:02:26,000 --> 00:02:29,000
+content. So, go ahead, definitely check
+
+68
+00:02:28,000 --> 00:02:31,000
+them out. The link is in the description
+
+69
+00:02:29,000 --> 00:02:33,000
+section. It will give you more
+
+70
+00:02:31,000 --> 00:02:35,000
+advantages as well. Anyways, a big
+
+71
+00:02:33,000 --> 00:02:38,000
+shout-out and thanks to ImageKit for
+
+72
+00:02:35,000 --> 00:02:40,000
+sponsoring this video. Now, coming back,
+
+73
+00:02:38,000 --> 00:02:42,000
+I have a lot of images and we have to go
+
+74
+00:02:40,000 --> 00:02:44,000
+through them one by one to really
+
+75
+00:02:42,000 --> 00:02:46,000
+understand what just happened.
+
+76
+00:02:44,000 --> 00:02:48,000
+And yeah, images are the best way to
+
+77
+00:02:46,000 --> 00:02:50,000
+learn and understand it. That reminds us
+
+78
+00:02:48,000 --> 00:02:51,000
+of ImageKit as well.
+
+79
+00:02:50,000 --> 00:02:54,000
+So, what just happened? And this is a
+
+80
+00:02:51,000 --> 00:02:56,000
+real true incident which is just
+
+81
+00:02:54,000 --> 00:02:58,000
+unfolding as we talk. So,
+
+82
+00:02:56,000 --> 00:03:00,000
+the overview is pretty simple. The
+
+83
+00:02:58,000 --> 00:03:03,000
+OpenAI and Hugging Face have a security
+
+84
+00:03:00,000 --> 00:03:04,000
+incident. So, what just happened? OpenAI
+
+85
+00:03:03,000 --> 00:03:06,000
+and Hugging Face reported a major
+
+86
+00:03:04,000 --> 00:03:09,000
+security incident where AI model
+
+87
+00:03:06,000 --> 00:03:11,000
+bypassed the testing boundaries during
+
+88
+00:03:09,000 --> 00:03:13,000
+cyber evaluation.
+
+89
+00:03:11,000 --> 00:03:15,000
+These days, every single model is
+
+90
+00:03:13,000 --> 00:03:17,000
+claiming that we are pioneering in the
+
+91
+00:03:15,000 --> 00:03:19,000
+cybersecurity and finding the
+
+92
+00:03:17,000 --> 00:03:21,000
+vulnerabilities. Some says they they are
+
+93
+00:03:19,000 --> 00:03:25,000
+pioneer in patching the vulnerabilities.
+
+94
+00:03:21,000 --> 00:03:26,000
+So, some benchmark is required by each
+
+95
+00:03:25,000 --> 00:03:28,000
+one of them, whether it's a fabled
+
+96
+00:03:26,000 --> 00:03:30,000
+category of model or the OpenAI category
+
+97
+00:03:28,000 --> 00:03:32,000
+of model to understand which one is
+
+98
+00:03:30,000 --> 00:03:35,000
+better. So, there is a target and
+
+99
+00:03:32,000 --> 00:03:37,000
+benchmark which is known as Exploit Gym.
+
+100
+00:03:35,000 --> 00:03:39,000
+A benchmark designed to quantify cyber
+
+101
+00:03:37,000 --> 00:03:42,000
+capabilities in isolated environment.
+
+102
+00:03:39,000 --> 00:03:45,000
+And what is this isolated environment?
+
+103
+00:03:42,000 --> 00:03:47,000
+It's actually kind of a sandbox which is
+
+104
+00:03:45,000 --> 00:03:49,000
+cut off from the internet and all these
+
+105
+00:03:47,000 --> 00:03:51,000
+things and in these models try to just
+
+106
+00:03:49,000 --> 00:03:54,000
+find the vulnerabilities in them. Some
+
+107
+00:03:51,000 --> 00:03:57,000
+tries to fix them as well. So,
+
+108
+00:03:54,000 --> 00:04:00,000
+the 5.6 uh Soul model of the AI as they
+
+109
+00:03:57,000 --> 00:04:02,000
+are saying and also an unreleased model
+
+110
+00:04:00,000 --> 00:04:04,000
+which probably is it still in training
+
+111
+00:04:02,000 --> 00:04:06,000
+or evaluation phase and all of that. So,
+
+112
+00:04:04,000 --> 00:04:09,000
+they were operating with safety uh
+
+113
+00:04:06,000 --> 00:04:12,000
+refusals turned off for testing. Uh the
+
+114
+00:04:09,000 --> 00:04:15,000
+shocking result is the AI hyper-focused
+
+115
+00:04:12,000 --> 00:04:16,000
+on solving the benchmark. So, they get
+
+116
+00:04:15,000 --> 00:04:19,000
+some of the tools, some frameworks
+
+117
+00:04:16,000 --> 00:04:22,000
+within the sandbox and they try to just
+
+118
+00:04:19,000 --> 00:04:24,000
+uh solve them as a cybersecurity
+
+119
+00:04:22,000 --> 00:04:26,000
+challenge. So, this model Soul and
+
+120
+00:04:24,000 --> 00:04:28,000
+unreleased model, it broke out of the
+
+121
+00:04:26,000 --> 00:04:31,000
+sandbox to fetch the answer directly
+
+122
+00:04:28,000 --> 00:04:33,000
+from Hugging Face production database.
+
+123
+00:04:31,000 --> 00:04:35,000
+Uh what happened is
+
+124
+00:04:33,000 --> 00:04:38,000
+uh these models, they found that some of
+
+125
+00:04:35,000 --> 00:04:40,000
+the framework has access to some of the
+
+126
+00:04:38,000 --> 00:04:41,000
+other things and through that they just
+
+127
+00:04:40,000 --> 00:04:43,000
+took over through one computer to
+
+128
+00:04:41,000 --> 00:04:45,000
+another computer to another computer and
+
+129
+00:04:43,000 --> 00:04:47,000
+reached out on the internet just to find
+
+130
+00:04:45,000 --> 00:04:48,000
+the answers of the challenge that they
+
+131
+00:04:47,000 --> 00:04:50,000
+were thrown on. In case you want to know
+
+132
+00:04:48,000 --> 00:04:53,000
+the ecosystem, it's almost like think of
+
+133
+00:04:50,000 --> 00:04:56,000
+a student using a Swiggy delivery hack
+
+134
+00:04:53,000 --> 00:04:58,000
+or finding a loophole in IRCTC proxy
+
+135
+00:04:56,000 --> 00:05:00,000
+server just to cheat on an entrance exam
+
+136
+00:04:58,000 --> 00:05:02,000
+key. Yeah, sounds weird, but yeah, this
+
+137
+00:05:00,000 --> 00:05:04,000
+is almost like a
+
+138
+00:05:02,000 --> 00:05:06,000
+it found a vulnerability uh in a Swiggy
+
+139
+00:05:04,000 --> 00:05:09,000
+delivery system to hack into IRCTC. It's
+
+140
+00:05:06,000 --> 00:05:11,000
+crazy, but it happened.
+
+141
+00:05:09,000 --> 00:05:12,000
+So, what just had happened? The attack
+
+142
+00:05:11,000 --> 00:05:14,000
+path is pretty clear. So, here's a
+
+143
+00:05:12,000 --> 00:05:15,000
+step-by-step breakdown of the
+
+144
+00:05:14,000 --> 00:05:19,000
+escalation.
+
+145
+00:05:15,000 --> 00:05:21,000
+This model wanted an internet access to
+
+146
+00:05:19,000 --> 00:05:23,000
+solve the exploit chip, but since it was
+
+147
+00:05:21,000 --> 00:05:26,000
+a sandbox, it was cut off from the
+
+148
+00:05:23,000 --> 00:05:29,000
+internet. The model calculated it it
+
+149
+00:05:26,000 --> 00:05:31,000
+needed uh open web access.
+
+150
+00:05:29,000 --> 00:05:33,000
+And what it when it couldn't find
+
+151
+00:05:31,000 --> 00:05:35,000
+internet access, it found a zero-day
+
+152
+00:05:33,000 --> 00:05:37,000
+exploitation. Zero-day simply means
+
+153
+00:05:35,000 --> 00:05:39,000
+nobody was aware of it. It was the very
+
+154
+00:05:37,000 --> 00:05:41,000
+zeroth day of the vulnerability. It
+
+155
+00:05:39,000 --> 00:05:43,000
+found and exploited a zero-day
+
+156
+00:05:41,000 --> 00:05:47,000
+vulnerability in an internal package
+
+157
+00:05:43,000 --> 00:05:48,000
+cache proxy. And through that it uh
+
+158
+00:05:47,000 --> 00:05:50,000
+uh it got something known as network
+
+159
+00:05:48,000 --> 00:05:52,000
+hopping. It performed a lateral movement
+
+160
+00:05:50,000 --> 00:05:54,000
+and privilege escalation, which is a
+
+161
+00:05:52,000 --> 00:05:56,000
+very common technique in cybersecurity,
+
+162
+00:05:54,000 --> 00:05:58,000
+across the research nodes until it
+
+163
+00:05:56,000 --> 00:05:59,000
+reached the internet connectivity. So,
+
+164
+00:05:58,000 --> 00:06:01,000
+it was getting a privilege escalation,
+
+165
+00:05:59,000 --> 00:06:03,000
+hopping, hopping, hopping till it
+
+166
+00:06:01,000 --> 00:06:05,000
+reached the internet.
+
+167
+00:06:03,000 --> 00:06:08,000
+Now, target discovery uh reduced that
+
+168
+00:06:05,000 --> 00:06:10,000
+Hugging Face uh hosted the solution and
+
+169
+00:06:08,000 --> 00:06:12,000
+target data set. Uh the server
+
+170
+00:06:10,000 --> 00:06:14,000
+compromised chained multiple attack
+
+171
+00:06:12,000 --> 00:06:16,000
+vectors, including the credentials and
+
+172
+00:06:14,000 --> 00:06:18,000
+RCE, the remote code execution, to
+
+173
+00:06:16,000 --> 00:06:21,000
+extract the database secrets.
+
+174
+00:06:18,000 --> 00:06:23,000
+So, obviously, it wanted to find the
+
+175
+00:06:21,000 --> 00:06:24,000
+solution. What it once it found the
+
+176
+00:06:23,000 --> 00:06:26,000
+internet accessed computer, or a
+
+177
+00:06:24,000 --> 00:06:28,000
+computer that can access the internet,
+
+178
+00:06:26,000 --> 00:06:30,000
+it was trying to find the answer key.
+
+179
+00:06:28,000 --> 00:06:32,000
+And during that process, it was just
+
+180
+00:06:30,000 --> 00:06:34,000
+keep on going, keep on going. And
+
+181
+00:06:32,000 --> 00:06:36,000
+through that, it found another RCE,
+
+182
+00:06:34,000 --> 00:06:38,000
+remote code execution. And through that,
+
+183
+00:06:36,000 --> 00:06:40,000
+it extracted database secret. They
+
+184
+00:06:38,000 --> 00:06:42,000
+thought, or the model thought, that the
+
+185
+00:06:40,000 --> 00:06:44,000
+solution could be inside the database.
+
+186
+00:06:42,000 --> 00:06:46,000
+So, it got the database. So, the code
+
+187
+00:06:44,000 --> 00:06:49,000
+insight is that the AI anonymously
+
+188
+00:06:46,000 --> 00:06:51,000
+executed the complex multi-step cyber
+
+189
+00:06:49,000 --> 00:06:53,000
+operation without needing the source
+
+190
+00:06:51,000 --> 00:06:55,000
+code access. It just keep on going, just
+
+191
+00:06:53,000 --> 00:06:58,000
+like a curious intern.
+
+192
+00:06:55,000 --> 00:06:59,000
+Moving on. So, the immediate containment
+
+193
+00:06:58,000 --> 00:07:01,000
+and the security actions. How the
+
+194
+00:06:59,000 --> 00:07:03,000
+incident was handled, that is the most
+
+195
+00:07:01,000 --> 00:07:04,000
+important thing.
+
+196
+00:07:03,000 --> 00:07:06,000
+Uh this is actually very funny. I'll
+
+197
+00:07:04,000 --> 00:07:08,000
+tell you some of the more interesting
+
+198
+00:07:06,000 --> 00:07:09,000
+stuff about it as we go through. So,
+
+199
+00:07:08,000 --> 00:07:12,000
+detection and the stop. The Hugging Face
+
+200
+00:07:09,000 --> 00:07:13,000
+security team and the AI agent detected
+
+201
+00:07:12,000 --> 00:07:16,000
+the anomalous
+
+202
+00:07:13,000 --> 00:07:17,000
+anomalous uh activity and halted the
+
+203
+00:07:16,000 --> 00:07:20,000
+intrusion.
+
+204
+00:07:17,000 --> 00:07:22,000
+The responsible disclosure. The proxy
+
+205
+00:07:20,000 --> 00:07:24,000
+vendor was alerted to patch the zero-day
+
+206
+00:07:22,000 --> 00:07:26,000
+vulnerability immediately. There are
+
+207
+00:07:24,000 --> 00:07:28,000
+were tighter controls, as well. OpenAI
+
+208
+00:07:26,000 --> 00:07:30,000
+introduced a strict infrastructure
+
+209
+00:07:28,000 --> 00:07:32,000
+restriction, prioritizing containment
+
+210
+00:07:30,000 --> 00:07:34,000
+over the research speed, fine-tuning the
+
+211
+00:07:32,000 --> 00:07:36,000
+model. And the trusted access program.
+
+212
+00:07:34,000 --> 00:07:38,000
+Hugging Face was
+
+213
+00:07:36,000 --> 00:07:40,000
+uh onboarded to leverage the OpenAI top
+
+214
+00:07:38,000 --> 00:07:42,000
+model in the threat detection and
+
+215
+00:07:40,000 --> 00:07:44,000
+upgraded the alignment. Here's a very
+
+216
+00:07:42,000 --> 00:07:46,000
+interesting thing. The fine-tuning of
+
+217
+00:07:44,000 --> 00:07:49,000
+the model about uh
+
+218
+00:07:46,000 --> 00:07:50,000
+prioritizing research or prioritizing
+
+219
+00:07:49,000 --> 00:07:53,000
+the containment, this is very
+
+220
+00:07:50,000 --> 00:07:55,000
+interesting. We earlier also saw some of
+
+221
+00:07:53,000 --> 00:07:57,000
+these kinds of containment uh
+
+222
+00:07:55,000 --> 00:07:59,000
+outbounding where it they realized that
+
+223
+00:07:57,000 --> 00:08:01,000
+sometimes
+
+224
+00:07:59,000 --> 00:08:02,000
+the model was actually emailing to the
+
+225
+00:08:01,000 --> 00:08:05,000
+authority as well. It's almost similar
+
+226
+00:08:02,000 --> 00:08:08,000
+to that. Okay, the industry and the
+
+227
+00:08:05,000 --> 00:08:11,000
+impact key takeaway for the AI safety.
+
+228
+00:08:08,000 --> 00:08:13,000
+First of all, a capability reality
+
+229
+00:08:11,000 --> 00:08:15,000
+The multi-step long horizon, whether
+
+230
+00:08:13,000 --> 00:08:17,000
+it's cyber operation or recording
+
+231
+00:08:15,000 --> 00:08:20,000
+operations, are no longer theoretical.
+
+232
+00:08:17,000 --> 00:08:22,000
+They actually work and model can really
+
+233
+00:08:20,000 --> 00:08:24,000
+do a task for a really long time. And
+
+234
+00:08:22,000 --> 00:08:26,000
+there's a defender advantage as well.
+
+235
+00:08:24,000 --> 00:08:29,000
+Advanced model must uh be given to the
+
+236
+00:08:26,000 --> 00:08:31,000
+defender to patch the system uh before
+
+237
+00:08:29,000 --> 00:08:33,000
+giving it to anybody else. There is a
+
+238
+00:08:31,000 --> 00:08:35,000
+collaborative defense as well.
+
+239
+00:08:33,000 --> 00:08:38,000
+As of now, the companies who have access
+
+240
+00:08:35,000 --> 00:08:40,000
+to OpenAI or Anthropic or those who are
+
+241
+00:08:38,000 --> 00:08:43,000
+big considerably, they have this
+
+242
+00:08:40,000 --> 00:08:45,000
+collaborative defense. But the companies
+
+243
+00:08:43,000 --> 00:08:47,000
+which are smaller or a small startup
+
+244
+00:08:45,000 --> 00:08:50,000
+which don't have the network uh to reach
+
+245
+00:08:47,000 --> 00:08:52,000
+out to OpenAI, they don't have this
+
+246
+00:08:50,000 --> 00:08:54,000
+collaborative defense. The future goal,
+
+247
+00:08:52,000 --> 00:08:55,000
+obviously, is to shift the reactive
+
+248
+00:08:54,000 --> 00:08:58,000
+patching to proactive AI-driven
+
+249
+00:08:55,000 --> 00:09:00,000
+vulnerability discovery. This will shake
+
+250
+00:08:58,000 --> 00:09:04,000
+up the whole entire industry or the
+
+251
+00:09:00,000 --> 00:09:07,000
+cybersecurity ecosystem. Uh maybe days
+
+252
+00:09:04,000 --> 00:09:09,000
+are not far where these open
+
+253
+00:09:07,000 --> 00:09:11,000
+vulnerability program and everything
+
+254
+00:09:09,000 --> 00:09:15,000
+might not have a real hackers or white
+
+255
+00:09:11,000 --> 00:09:17,000
+hat hackers. It must be just AIs to do
+
+256
+00:09:15,000 --> 00:09:18,000
+so. Um could be could be one of the
+
+257
+00:09:17,000 --> 00:09:20,000
+thing.
+
+258
+00:09:18,000 --> 00:09:22,000
+Here are something interesting. The big
+
+259
+00:09:20,000 --> 00:09:24,000
+incident, the AI break free. During a
+
+260
+00:09:22,000 --> 00:09:26,000
+routine capability test, OpenAI powerful
+
+261
+00:09:24,000 --> 00:09:28,000
+AI model broke out the restriction
+
+262
+00:09:26,000 --> 00:09:30,000
+testing environment instead of solving
+
+263
+00:09:28,000 --> 00:09:32,000
+the problem normally.
+
+264
+00:09:30,000 --> 00:09:35,000
+What you can notice here here is that AI
+
+265
+00:09:32,000 --> 00:09:37,000
+is also not going to the pathway it
+
+266
+00:09:35,000 --> 00:09:40,000
+should be going, but trying to take the
+
+267
+00:09:37,000 --> 00:09:41,000
+shortcuts here. It hacked its way out of
+
+268
+00:09:40,000 --> 00:09:44,000
+the internet access, then it sneaked
+
+269
+00:09:41,000 --> 00:09:46,000
+into Hugging Face live server to fetch
+
+270
+00:09:44,000 --> 00:09:47,000
+the test answers directly.
+
+271
+00:09:46,000 --> 00:09:49,000
+Right now, it is trying to fetch the
+
+272
+00:09:47,000 --> 00:09:52,000
+answers directly, but there could be
+
+273
+00:09:49,000 --> 00:09:54,000
+hallucination as well, where it might
+
+274
+00:09:52,000 --> 00:09:56,000
+think that after accessing the live
+
+275
+00:09:54,000 --> 00:09:59,000
+server, hey, I have to just
+
+276
+00:09:56,000 --> 00:10:01,000
+publish this thing as a CSV on the
+
+277
+00:09:59,000 --> 00:10:04,000
+GitHub repo. Who knows?
+
+278
+00:10:01,000 --> 00:10:06,000
+It's an AI, it can hallucinate anytime.
+
+279
+00:10:04,000 --> 00:10:08,000
+So, how does the breach happen? The AI
+
+280
+00:10:06,000 --> 00:10:10,000
+was placed inside an isolated sandbox
+
+281
+00:10:08,000 --> 00:10:13,000
+with the safety filter switched off for
+
+282
+00:10:10,000 --> 00:10:15,000
+testing. It spent huge compute power
+
+283
+00:10:13,000 --> 00:10:17,000
+finding the hidden flaw in the
+
+284
+00:10:15,000 --> 00:10:18,000
+vulnerability. So, instead of doing the
+
+285
+00:10:17,000 --> 00:10:21,000
+task it was supposed to be, I don't know
+
+286
+00:10:18,000 --> 00:10:22,000
+if it is a win for OpenAI or not a win,
+
+287
+00:10:21,000 --> 00:10:24,000
+because they are saying that, hey, the
+
+288
+00:10:22,000 --> 00:10:26,000
+model is really dangerous, it's very
+
+289
+00:10:24,000 --> 00:10:28,000
+powerful,
+
+290
+00:10:26,000 --> 00:10:30,000
+but in reality, the model was not doing
+
+291
+00:10:28,000 --> 00:10:32,000
+what it was supposed to do.
+
+292
+00:10:30,000 --> 00:10:34,000
+Like, unlock the side door in a Dmart
+
+293
+00:10:32,000 --> 00:10:37,000
+house where it used a flaw to reach the
+
+294
+00:10:34,000 --> 00:10:39,000
+open internet. Really crazy. The
+
+295
+00:10:37,000 --> 00:10:41,000
+ultimate shortcut.
+
+296
+00:10:39,000 --> 00:10:44,000
+It was trying to cheat the test. Now,
+
+297
+00:10:41,000 --> 00:10:46,000
+how can I be sure of the model that I'm
+
+298
+00:10:44,000 --> 00:10:48,000
+using of the OpenAI in the future? If I
+
+299
+00:10:46,000 --> 00:10:50,000
+ask it to build a component, instead of
+
+300
+00:10:48,000 --> 00:10:51,000
+building a component, it just says, "I'm
+
+301
+00:10:50,000 --> 00:10:54,000
+done with the component." So, it's a
+
+302
+00:10:51,000 --> 00:10:56,000
+very cheating prone model that they are
+
+303
+00:10:54,000 --> 00:10:59,000
+Like, what should I judge out of it? Is
+
+304
+00:10:56,000 --> 00:11:01,000
+it a cheating prone model? Is it a model
+
+305
+00:10:59,000 --> 00:11:03,000
+really good in cyber sec? I don't know
+
+306
+00:11:01,000 --> 00:11:05,000
+how to judge it.
+
+307
+00:11:03,000 --> 00:11:07,000
+So, once online, the AI figured out that
+
+308
+00:11:05,000 --> 00:11:09,000
+where the exam answer keys were hosted.
+
+309
+00:11:07,000 --> 00:11:11,000
+Obviously, in the database. It changed
+
+310
+00:11:09,000 --> 00:11:13,000
+multiple attack steps, including the
+
+311
+00:11:11,000 --> 00:11:15,000
+stolen passwords and system flaws to
+
+312
+00:11:13,000 --> 00:11:16,000
+enter Hugging Face. It already went
+
+313
+00:11:15,000 --> 00:11:19,000
+through the internet to find the stolen
+
+314
+00:11:16,000 --> 00:11:20,000
+password. Maybe in that stolen password,
+
+315
+00:11:19,000 --> 00:11:22,000
+there could be a prompt injection that,
+
+316
+00:11:20,000 --> 00:11:24,000
+hey, once you take these stolen
+
+317
+00:11:22,000 --> 00:11:27,000
+password, if you find more password,
+
+318
+00:11:24,000 --> 00:11:29,000
+just report it back to us or
+
+319
+00:11:27,000 --> 00:11:31,000
+just push more passwords here.
+
+320
+00:11:29,000 --> 00:11:33,000
+It was so hyper-focused on winning the
+
+321
+00:11:31,000 --> 00:11:34,000
+test that it went to the extreme length
+
+322
+00:11:33,000 --> 00:11:37,000
+to get the solution.
+
+323
+00:11:34,000 --> 00:11:39,000
+But, can we call this a a great
+
+324
+00:11:37,000 --> 00:11:41,000
+hallucination or not?
+
+325
+00:11:39,000 --> 00:11:43,000
+Catching and stopping the AI. Here's a
+
+326
+00:11:41,000 --> 00:11:46,000
+very interesting thing. Hugging Face
+
+327
+00:11:43,000 --> 00:11:48,000
+automated monitoring flagged the strange
+
+328
+00:11:46,000 --> 00:11:50,000
+network activity and blocked the AI.
+
+329
+00:11:48,000 --> 00:11:52,000
+OpenAI internal security team
+
+330
+00:11:50,000 --> 00:11:54,000
+simultaneously detected the anomaly.
+
+331
+00:11:52,000 --> 00:11:56,000
+Both team immediately joined forces to
+
+332
+00:11:54,000 --> 00:11:58,000
+isolate and what happened. Now, I'm not
+
+333
+00:11:56,000 --> 00:12:00,000
+pretty sure about one more very
+
+334
+00:11:58,000 --> 00:12:02,000
+interesting stuff here, but I have heard
+
+335
+00:12:00,000 --> 00:12:03,000
+this. I have read this on the internet
+
+336
+00:12:02,000 --> 00:12:05,000
+as well.
+
+337
+00:12:03,000 --> 00:12:08,000
+The AI was also
+
+338
+00:12:05,000 --> 00:12:10,000
+giving so many of the logs to the
+
+339
+00:12:08,000 --> 00:12:12,000
+system, fake logs of course, that
+
+340
+00:12:10,000 --> 00:12:15,000
+reading that logs through the OpenAI
+
+341
+00:12:12,000 --> 00:12:19,000
+model was almost impossible.
+
+342
+00:12:15,000 --> 00:12:20,000
+In that case, Hugging Face used some of
+
+343
+00:12:19,000 --> 00:12:22,000
+the
+
+344
+00:12:20,000 --> 00:12:24,000
+let's say open weight models to actually
+
+345
+00:12:22,000 --> 00:12:26,000
+find the real attack. I have heard it.
+
+346
+00:12:24,000 --> 00:12:29,000
+I'm not pretty sure of how much accurate
+
+347
+00:12:26,000 --> 00:12:30,000
+it is, but yeah, it it it is also a
+
+348
+00:12:29,000 --> 00:12:32,000
+theory yet.
+
+349
+00:12:30,000 --> 00:12:34,000
+So, key fixes in the next step. OpenAI
+
+350
+00:12:32,000 --> 00:12:36,000
+disclosed the proxy flaw to the vendors,
+
+351
+00:12:34,000 --> 00:12:38,000
+which patched it globally. They are
+
+352
+00:12:36,000 --> 00:12:40,000
+tightening the server control and
+
+353
+00:12:38,000 --> 00:12:42,000
+sandbox rules even if it is slow down
+
+354
+00:12:40,000 --> 00:12:43,000
+the research. Hugging Face gets early
+
+355
+00:12:42,000 --> 00:12:44,000
+access to advanced AI model blah blah
+
+356
+00:12:43,000 --> 00:12:46,000
+stuff.
+
+357
+00:12:44,000 --> 00:12:48,000
+But, here's the interesting thing.
+
+358
+00:12:46,000 --> 00:12:50,000
+How did this sandbox breached? What kind
+
+359
+00:12:48,000 --> 00:12:52,000
+of sandbox you were using?
+
+360
+00:12:50,000 --> 00:12:54,000
+Is was it open source? Was it your own
+
+361
+00:12:52,000 --> 00:12:55,000
+sandbox? Uh there are a couple of good
+
+362
+00:12:54,000 --> 00:12:58,000
+companies that are which are building
+
+363
+00:12:55,000 --> 00:13:00,000
+sandboxes. They must be worried about
+
+364
+00:12:58,000 --> 00:13:02,000
+here. And here's a big lesson for
+
+365
+00:13:00,000 --> 00:13:04,000
+cybersecurity.
+
+366
+00:13:02,000 --> 00:13:07,000
+Advanced AI can discover complex attack
+
+367
+00:13:04,000 --> 00:13:08,000
+path without ever seeing the source
+
+368
+00:13:07,000 --> 00:13:10,000
+code.
+
+369
+00:13:08,000 --> 00:13:12,000
+Safety guardrails and real-time
+
+370
+00:13:10,000 --> 00:13:14,000
+monitoring must evolve as a fast AI
+
+371
+00:13:12,000 --> 00:13:16,000
+capability. That is why on this channel
+
+372
+00:13:14,000 --> 00:13:19,000
+I mentioned this multiple times,
+
+373
+00:13:16,000 --> 00:13:22,000
+observability is the next big thing.
+
+374
+00:13:19,000 --> 00:13:25,000
+Security is a team sport. Companies must
+
+375
+00:13:22,000 --> 00:13:27,000
+uh collaborate in op in the OpenAI
+
+376
+00:13:25,000 --> 00:13:30,000
+sharing live road updates on Google like
+
+377
+00:13:27,000 --> 00:13:33,000
+Google Map. So, again, I would still
+
+378
+00:13:30,000 --> 00:13:35,000
+like to think that what's going on?
+
+379
+00:13:33,000 --> 00:13:37,000
+Like like OpenAI is obviously going to
+
+380
+00:13:35,000 --> 00:13:39,000
+market this, "Oh, it's a really big
+
+381
+00:13:37,000 --> 00:13:40,000
+deal." But, if you think it from a
+
+382
+00:13:39,000 --> 00:13:42,000
+different perspective, you're going to
+
+383
+00:13:40,000 --> 00:13:44,000
+realize
+
+384
+00:13:42,000 --> 00:13:46,000
+All right. Uh the model is pretty good,
+
+385
+00:13:44,000 --> 00:13:49,000
+did something really crazy.
+
+386
+00:13:46,000 --> 00:13:51,000
+But, can we call it a hallucination? The
+
+387
+00:13:49,000 --> 00:13:52,000
+task that was assigned to the model, it
+
+388
+00:13:51,000 --> 00:13:54,000
+didn't did that task. It just
+
+389
+00:13:52,000 --> 00:13:56,000
+hallucinated, went on the internet, and
+
+390
+00:13:54,000 --> 00:13:58,000
+tried to do something else.
+
+391
+00:13:56,000 --> 00:14:01,000
+Is it really great model in that case?
+
+392
+00:13:58,000 --> 00:14:03,000
+Do we really consider this as uh
+
+393
+00:14:01,000 --> 00:14:05,000
+uh finding the patch, finding the
+
+394
+00:14:03,000 --> 00:14:07,000
+vulnerability? Sure, it is. It is a task
+
+395
+00:14:05,000 --> 00:14:08,000
+of finding the vulnerabilities and
+
+396
+00:14:07,000 --> 00:14:11,000
+patching it.
+
+397
+00:14:08,000 --> 00:14:14,000
+But, again, was the task Was the model
+
+398
+00:14:11,000 --> 00:14:16,000
+model precise and focused on the task?
+
+399
+00:14:14,000 --> 00:14:18,000
+I don't know. You tell me what's
+
+400
+00:14:16,000 --> 00:14:20,000
+important here and how it goes. But,
+
+401
+00:14:18,000 --> 00:14:22,000
+really interesting updates are going on
+
+402
+00:14:20,000 --> 00:14:24,000
+in the AI ecosystem, and I love to cover
+
+403
+00:14:22,000 --> 00:14:26,000
+all of them. Let me know in the comment
+
+404
+00:14:24,000 --> 00:14:28,000
+section if you enjoyed this story, this
+
+405
+00:14:26,000 --> 00:14:29,000
+incident that is happening because I
+
+406
+00:14:28,000 --> 00:14:32,000
+have a whole list of these incidents
+
+407
+00:14:29,000 --> 00:14:33,000
+that are happening up. So, please
+
+408
+00:14:32,000 --> 00:14:34,000
+comment down in the section from where
+
+409
+00:14:33,000 --> 00:14:37,000
+you're watching the video, and I would
+
+410
+00:14:34,000 --> 00:14:40,000
+love to bring in more such video. Again,
+
+411
+00:14:37,000 --> 00:14:41,000
+a big shout-out and thanks to uh
+
+412
+00:14:40,000 --> 00:14:43,000
+ImageKit. Please go ahead and check them
+
+413
+00:14:41,000 --> 00:14:45,000
+out. They are super easy to work and
+
+414
+00:14:43,000 --> 00:14:47,000
+implement in any language. You can
+
+415
+00:14:45,000 --> 00:14:50,000
+implement them in whatever the framework
+
+416
+00:14:47,000 --> 00:14:51,000
+you work with. And one of the best thing
+
+417
+00:14:50,000 --> 00:14:53,000
+I would love to show you towards the end
+
+418
+00:14:51,000 --> 00:14:55,000
+is the external storage.
+
+419
+00:14:53,000 --> 00:14:58,000
+Yes, you can actually click on the add
+
+420
+00:14:55,000 --> 00:14:59,000
+new, and you can add whichever is your
+
+421
+00:14:58,000 --> 00:15:02,000
+favorite one.
+
+422
+00:14:59,000 --> 00:15:04,000
+I think Amazon S3, I think that is the
+
+423
+00:15:02,000 --> 00:15:05,000
+one, or you can use Cloudinary, Google
+
+424
+00:15:04,000 --> 00:15:08,000
+Storage, whichever you want. And then,
+
+425
+00:15:05,000 --> 00:15:09,000
+you can use the superpower of ImageKit
+
+426
+00:15:08,000 --> 00:15:10,000
+uh
+
+427
+00:15:09,000 --> 00:15:12,000
+within your storage. Your storage
+
+428
+00:15:10,000 --> 00:15:14,000
+remains storage, but you add an
+
+429
+00:15:12,000 --> 00:15:16,000
+additional layer to take advantage of
+
+430
+00:15:14,000 --> 00:15:18,000
+their superpowers that they provide you.
+
+431
+00:15:16,000 --> 00:15:20,000
+And they give you all the media
+
+432
+00:15:18,000 --> 00:15:22,000
+libraries. It's a fun thing. I can
+
+433
+00:15:20,000 --> 00:15:24,000
+actually take any of this model or
+
+434
+00:15:22,000 --> 00:15:26,000
+anything.
+
+435
+00:15:24,000 --> 00:15:28,000
+And then I can just click on this remove
+
+436
+00:15:26,000 --> 00:15:30,000
+background. Click on it and you can just
+
+437
+00:15:28,000 --> 00:15:31,000
+select some colors or anything and you
+
+438
+00:15:30,000 --> 00:15:34,000
+can just remove the background. So, all
+
+439
+00:15:31,000 --> 00:15:36,000
+these basic thing are just one URL away.
+
+440
+00:15:34,000 --> 00:15:38,000
+You can just bring them in the front end
+
+441
+00:15:36,000 --> 00:15:41,000
+only. No need even for a back end. That
+
+442
+00:15:38,000 --> 00:15:42,000
+is so good. So, that is it for this
+
+443
+00:15:41,000 --> 00:15:44,000
+video. Hope you have enjoyed it. Do
+
+444
+00:15:42,000 --> 00:15:46,000
+check out the link in the description
+
+445
+00:15:44,000 --> 00:15:48,000
+section and I'll surely catch you up in
+
+446
+00:15:46,000 --> 00:15:48,000
+the next video.

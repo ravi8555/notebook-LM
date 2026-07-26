@@ -9,47 +9,89 @@ import { VectorStore } from "./VectorStore";
 import { SearchFilter } from "../retrieval";
 import { timeStamp } from "node:console";
 
-const COLLECTION_NAME = "course-rag";
+import { QdrantClient } from '@qdrant/js-client-rest';
+
+const COLLECTION_NAME = "notebook-Lm-col";
 
 export class QdrantVectorStore implements VectorStore {
+    private client = new QdrantClient({ url: process.env.QDRANT_URL })
 
-  private readonly client = qdrant;
+//   private readonly client = qdrant;
 
     constructor(
         private readonly collectionName = COLLECTION_NAME
     ) {}
 
-    private buildFilter(filter?: SearchFilter) {
-        console.dir(filter, { depth: null });
+//     private buildFilter(filter?: SearchFilter) {
+//         console.dir(filter, { depth: null });
 
-    if (!filter) {
-        return undefined;
-    }
+//     if (!filter) {
+//         return undefined;
+//     }
 
-    const must: any[] = [];
+//     const must: any[] = [];
 
-    if (filter.courseId) {
-        must.push({
-            key: "metadata.courseId",
-            match: {
-                value: filter.courseId,
-            },
-        });
-    }
+//     if (filter.courseId) {
+//         must.push({
+//             key: "metadata.courseId",
+//             match: {
+//                 value: filter.courseId,
+//             },
+//         });
+//     }
 
-    if (filter.lessonId) {
-        must.push({
-            key: "metadata.lessonId",
-            match: {
-                value: filter.lessonId,
-            },
-        });
-    }
+//     // Support filtering by multiple course IDs
+//         if (filter.courseId && filter.courseId.length > 0) {
+//             must.push({
+//                 key: "metadata.courseId",
+//                 match: { any: filter.courseId },
+//             });
+//         }
+
+//     if (filter.lessonId) {
+//         must.push({
+//             key: "metadata.lessonId",
+//             match: {
+//                 value: filter.lessonId,
+//             },
+//         });
+//     }
 
     
 
-    return must.length ? { must } : undefined;
-}
+//     return must.length ? { must } : undefined;
+// }
+
+    private buildFilter(filter?: SearchFilter) {
+        if (!filter) return undefined;
+
+        const must: any[] = [];
+
+        // Single course filter
+        if (filter.courseId) {
+            must.push({
+                key: "metadata.courseId",
+                match: { value: filter.courseId },
+            });
+        }
+
+        // Multiple courses filter (only if courseId not already set)
+        if (filter.courseIds && filter.courseIds.length > 0) {
+            must.push({
+                key: "metadata.courseId",
+                match: { any: filter.courseIds },
+            });
+        }
+
+        if (filter.lessonId) {
+            must.push({
+                key: "metadata.lessonId",
+                match: { value: filter.lessonId },
+            });
+        }
+
+        return must.length ? { must } : undefined;
+    }
 
     async upsert(vector: VectorDocument): Promise<void> {
     await this.upsertBatch([vector]);
@@ -133,31 +175,95 @@ export class QdrantVectorStore implements VectorStore {
     embedding: number[],
     options?: SearchOptions,
     filter?: SearchFilter
-): Promise<VectorSearchResult[]> {
+  ): Promise<VectorSearchResult[]> {
 
     const qdrantFilter = this.buildFilter(filter);
-
-console.dir(qdrantFilter, { depth: null });
-
-    const response = await this.client.query(
-    this.collectionName,
-    {
-        query: embedding,
-        limit: options?.limit ?? 5,
-        with_payload: true,
-        filter: this.buildFilter(filter),
+    
+    // Build query params — ONLY add filter if it exists
+    const queryParams: any = {
+      query: embedding,
+      limit: options?.limit ?? 5,
+      with_payload: true,
+    };
+    
+    if (qdrantFilter) {
+      queryParams.filter = qdrantFilter;
     }
-);
 
-console.dir(response.points[0].payload, {
-    depth: null,
-});
+    console.log('🔍 Qdrant search params:', {
+      collection: this.collectionName,
+      limit: queryParams.limit,
+      filter: qdrantFilter,
+      vectorSample: embedding.slice(0, 3),
+    });
+
+    const response = await this.client.query(this.collectionName, queryParams);
+
+    console.log('🔍 Qdrant response:', {
+      pointsCount: response.points?.length ?? 0,
+      scores: response.points?.map((p: any) => p.score),
+      sources: response.points?.map((p: any) => p.payload?.metadata?.lessonTitle),
+    });
+
+    if (!response.points || response.points.length === 0) {
+      console.warn('⚠️ Qdrant returned 0 results');
+      return [];
+    }
+
     return response.points.map((point: any) => ({
-        score: point.score,
-        chunk: point.payload as DocumentChunk,
+      score: point.score,
+      chunk: point.payload as DocumentChunk,
     }));
+  }
 
-}
+
+//   async search(
+//     embedding: number[],
+//     options?: SearchOptions,
+//     filter?: SearchFilter
+// ): Promise<VectorSearchResult[]> {
+
+//     const qdrantFilter = this.buildFilter(filter);
+
+// // console.dir(qdrantFilter, { depth: null });
+
+//     const response = await this.client.query(
+//     this.collectionName,
+//     {
+//         query: embedding,
+//         limit: options?.limit ?? 5,
+//         with_payload: true,
+//         filter: this.buildFilter(filter),
+//     }
+// );
+
+// // console.dir(response.points[0].payload, {
+// //     depth: null,
+// // });
+//     return response.points.map((point: any) => ({
+//         score: point.score,
+//         chunk: point.payload as DocumentChunk,
+//     }));
+
+// }
+
+    async deleteByCourseId(courseId: string): Promise<void> {
+    try {
+      await this.client.delete(this.collectionName, {
+        wait: true,
+        filter: {
+          must: [{
+            key: "metadata.courseId",
+            match: { value: courseId },
+          }],
+        },
+      });
+      console.log(`🗑️ Deleted vectors for course: ${courseId}`);
+    } catch (err: any) {
+      console.error("🗑️ Qdrant delete failed:", err.message);
+      // Don't throw — we still want to clean up files/DB even if Qdrant misses some vectors
+    }
+  }
 
 async debugPayload() {
 

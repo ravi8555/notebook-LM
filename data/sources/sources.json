@@ -1,0 +1,48 @@
+[
+  {
+    "id": "38d75e02-4bf1-4625-96bb-ad2be9f0521a",
+    "name": "Event loop explain",
+    "type": "weblink",
+    "status": "indexed",
+    "url": "https://blog.portfoliohub.in/the-node-js-event-loop-explained",
+    "courseId": "course-38d75e02-4bf1-4625-96bb-ad2be9f0521a",
+    "createdAt": "2026-07-26T03:36:52.874Z"
+  },
+  {
+    "id": "da6c8e1c-b6a7-470f-8ea1-149ac610a318",
+    "name": "OpenAI Hacked",
+    "type": "youtube",
+    "status": "indexed",
+    "url": "https://www.youtube.com/watch?v=yUFpTtM7PvI&t=127s",
+    "courseId": "course-da6c8e1c-b6a7-470f-8ea1-149ac610a318",
+    "createdAt": "2026-07-26T14:22:46.310Z"
+  },
+  {
+    "id": "54605e00-862f-4bc1-8574-6d664646c79a",
+    "name": "React",
+    "type": "pdf",
+    "status": "indexed",
+    "filePath": "D:\\practice\\GenAI-2026\\projects\\notebook-LM\\data\\sources\\uploads\\54605e00-862f-4bc1-8574-6d664646c79a.pdf",
+    "courseId": "course-54605e00-862f-4bc1-8574-6d664646c79a",
+    "createdAt": "2026-07-26T14:34:38.709Z"
+  },
+  {
+    "id": "2a3c11ca-5c56-421b-8da3-3189fe7755f0",
+    "name": "Mobile Development",
+    "type": "vtt",
+    "status": "indexed",
+    "filePath": "D:\\practice\\GenAI-2026\\projects\\notebook-LM\\data\\sources\\uploads\\2a3c11ca-5c56-421b-8da3-3189fe7755f0.vtt",
+    "courseId": "course-2a3c11ca-5c56-421b-8da3-3189fe7755f0",
+    "createdAt": "2026-07-26T14:40:02.511Z"
+  },
+  {
+    "id": "a1b5790b-73a6-45ec-b887-e586a90d9030",
+    "name": "Deep Mind",
+    "type": "text",
+    "status": "indexed",
+    "content": "DeepMind Technologies Limited, trading as Google DeepMind or simply DeepMind, is a British-American artificial intelligence (AI) research laboratory which serves as a subsidiary of Alphabet Inc. Founded in the UK in 2010, it was acquired by Google in 2014,[8] and merged with Google AI's Google Brain division to become Google DeepMind in April 2023. The company is headquartered in London, with research centres in the United States, Canada,[9] France,[10] Germany, and Switzerland.\r\n\r\nIn 2014, DeepMind introduced neural Turing machines (neural networks that can access external memory like a conventional Turing machine).[11][12] The company has created many neural network models trained with reinforcement learning to play video games and board games. It made headlines in 2016 after its AlphaGo program beat Lee Sedol, a Go world champion, in a five-game match, which was later featured in the documentary AlphaGo.[13] A more general program, AlphaZero, beat the most powerful programs playing go, chess and shogi (Japanese chess) after a few days of play against itself using reinforcement learning.[14] DeepMind has since trained models for game-playing (MuZero, AlphaStar), for mathematics (AlphaGeometry, FunSearch), and for algorithm discovery (AlphaEvolve, AlphaDev, AlphaTensor).\r\n\r\nIn 2020, DeepMind made significant advances in the problem of protein folding with AlphaFold, which achieved state of the art records on benchmark tests for protein folding prediction.[15] In July 2022, it was announced that over 200 million predicted protein structures, representing virtually all known proteins, would be released on the AlphaFold database.[16][17]\r\n\r\nGoogle DeepMind has become responsible for the development of Gemini (Google's family of large language models) and other generative AI tools, such as the text-to-image model Imagen, the text-to-video model Veo, and the text-to-music model Lyria.",
+    "filePath": "D:\\practice\\GenAI-2026\\projects\\notebook-LM\\data\\sources\\uploads\\a1b5790b-73a6-45ec-b887-e586a90d9030.txt",
+    "courseId": "course-a1b5790b-73a6-45ec-b887-e586a90d9030",
+    "createdAt": "2026-07-26T14:43:05.182Z"
+  }
+]

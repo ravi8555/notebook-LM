@@ -50,18 +50,17 @@ async function runSpecificTests() {
   // await testEmbeddings();
   // await testPromptBuilder();
   
-  // await testIndexing()
+  await testIndexing()
   // await testRAG()
 
   // await testCourseLoader()
   
   // await testTranscriptProcessor()
-  // await testCourseIndexer()
   // await testBatchCourseIndex()
 
   
 
-  await testFilter()
+  // await testFilter()
 }
 
 // Choose which function to run

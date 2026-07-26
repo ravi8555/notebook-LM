@@ -4,17 +4,23 @@ import { SearchOptions } from "./SearchOptions";
 import { SearchFilter } from "../retrieval/SearchFilter";
 
 export interface VectorStore {
-  createCollection(): Promise<void>;
-
   recreateCollection(): Promise<void>;
-
-
-  upsert(vector: VectorDocument): Promise<void>;
   upsertBatch(vectors: VectorDocument[]): Promise<void>;
-
-  search(
-    embedding: number[],
-    options?: SearchOptions,
-    filter?: SearchFilter
-  ): Promise<VectorSearchResult[]>;
+  search(embedding: number[], options: { limit: number }, filter?: SearchFilter): Promise<VectorSearchResult[]>;
 }
+
+// export interface VectorStore {
+//   createCollection(): Promise<void>;
+
+//   recreateCollection(): Promise<void>;
+
+
+//   upsert(vector: VectorDocument): Promise<void>;
+//   upsertBatch(vectors: VectorDocument[]): Promise<void>;
+
+//   search(
+//     embedding: number[],
+//     options?: SearchOptions,
+//     filter?: SearchFilter
+//   ): Promise<VectorSearchResult[]>;
+// }
