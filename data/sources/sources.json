@@ -44,5 +44,14 @@
     "filePath": "D:\\practice\\GenAI-2026\\projects\\notebook-LM\\data\\sources\\uploads\\a1b5790b-73a6-45ec-b887-e586a90d9030.txt",
     "courseId": "course-a1b5790b-73a6-45ec-b887-e586a90d9030",
     "createdAt": "2026-07-26T14:43:05.182Z"
+  },
+  {
+    "id": "f23de094-3686-486f-aded-1b286fdb4d8a",
+    "name": "blocking-vs-non-blocking-code-in-node",
+    "type": "weblink",
+    "status": "indexed",
+    "url": "https://blog.portfoliohub.in/blocking-vs-non-blocking-code-in-node-js",
+    "courseId": "course-f23de094-3686-486f-aded-1b286fdb4d8a",
+    "createdAt": "2026-07-26T17:09:45.889Z"
   }
 ]

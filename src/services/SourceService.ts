@@ -8,9 +8,13 @@ import { TranscriptProcessor } from '../course/TranscriptProcessor';
 import { IndexingService } from './IndexingService';
 import { QdrantVectorStore } from '../vectorstore';
 
-const DATA_DIR = path.join(process.cwd(), 'data', 'sources');
-const UPLOAD_DIR = path.join(DATA_DIR, 'uploads');
+// const DATA_DIR = path.join(process.cwd(), 'data', 'sources');
+// const UPLOAD_DIR = path.join(DATA_DIR, 'uploads');
+const DATA_DIR = '/tmp/data/sources';
+const UPLOAD_DIR = '/tmp/data/sources/uploads';
 const DB_PATH = path.join(DATA_DIR, 'sources.json');
+
+
 
 export class SourceService {
   private sources: Map<string, Source> = new Map();
