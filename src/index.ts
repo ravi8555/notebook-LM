@@ -17,7 +17,7 @@ import { testIndexing } from "./tests/test-6-indexing";
 import {testPromptBuilder} from "./tests/test-7-prompt" 
 import { testRAG } from "./tests/test-8-rag"; 
 import { testCourseLoader } from "./tests/test-9-course-loader";
-import { testTranscriptProcessor } from "./tests/test-10-transcript-processor";
+// import { testTranscriptProcessor } from "./tests/test-10-transcript-processor";
 import { testBatchCourseIndex } from "./tests/test-11-course-indexer";
 import { testFilter } from "./tests/test-13-filter";
 
@@ -50,7 +50,7 @@ async function runSpecificTests() {
   // await testEmbeddings();
   // await testPromptBuilder();
   
-  await testIndexing()
+  // await testIndexing()
   // await testRAG()
 
   // await testCourseLoader()

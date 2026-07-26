@@ -38,6 +38,7 @@ export abstract class BaseSubtitleParser implements TranscriptParser {
     }
 
     return {
+      id: options.lesson.id, 
       lesson: options.lesson,
       language: options.language,
       segments,
