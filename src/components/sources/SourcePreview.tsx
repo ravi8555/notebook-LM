@@ -114,11 +114,10 @@
 //   return match?.[1] || '';
 // }
 
-
 'use client';
 
 import { useApp } from '@/lib/context/AppContext';
-import { X, FileText, Youtube, Type, Link2, Subtitles, Loader2, AlertCircle } from 'lucide-react';
+import { X, FileText, Youtube, Type, Link2, Subtitles, Loader2, AlertCircle, ExternalLink } from 'lucide-react';
 import { useState, useEffect } from 'react';
 
 const typeIcons: Record<string, React.ElementType> = {
@@ -138,7 +137,7 @@ const typeLabels: Record<string, string> = {
 };
 
 export function SourcePreview() {
-  const { previewSource, setPreviewSource } = useApp();
+  const { previewSource, setPreviewSource, previewStartTime, setPreviewStartTime } = useApp();
   const [textContent, setTextContent] = useState<string>('');
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState('');
@@ -147,16 +146,16 @@ export function SourcePreview() {
     if (!previewSource) return;
     setTextContent('');
     setError('');
-    
+
     if (['text', 'weblink', 'vtt'].includes(previewSource.type)) {
       setLoading(true);
       fetch(`/api/sources/${previewSource.id}/file`)
-        .then(r => {
+        .then((r) => {
           if (!r.ok) throw new Error('Failed to load');
           return r.text();
         })
-        .then(text => setTextContent(text))
-        .catch(err => setError(err.message))
+        .then((text) => setTextContent(text))
+        .catch((err) => setError(err.message))
         .finally(() => setLoading(false));
     }
   }, [previewSource]);
@@ -165,6 +164,11 @@ export function SourcePreview() {
 
   const Icon = typeIcons[previewSource.type] || FileText;
   const label = typeLabels[previewSource.type] || 'Source';
+
+  const handleClose = () => {
+    setPreviewSource(null);
+    setPreviewStartTime(null);
+  };
 
   return (
     <aside className="w-[480px] border-l bg-card flex flex-col shrink-0 animate-in slide-in-from-right duration-200">
@@ -180,7 +184,7 @@ export function SourcePreview() {
           </div>
         </div>
         <button
-          onClick={() => setPreviewSource(null)}
+          onClick={handleClose}
           className="rounded-lg p-1.5 hover:bg-accent transition shrink-0"
         >
           <X className="h-4 w-4" />
@@ -218,7 +222,9 @@ export function SourcePreview() {
               <iframe
                 width="100%"
                 height="100%"
-                src={`https://www.youtube.com/embed/${extractVideoId(previewSource.url)}`}
+                src={`https://www.youtube.com/embed/${extractVideoId(previewSource.url)}${
+                  previewStartTime ? `?start=${Math.floor(previewStartTime)}` : ''
+                }`}
                 title="YouTube video player"
                 allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
                 allowFullScreen
@@ -226,7 +232,7 @@ export function SourcePreview() {
             </div>
             <div className="p-4">
               <a
-                href={previewSource.url}
+                href={`${previewSource.url}${previewStartTime ? `?t=${Math.floor(previewStartTime)}` : ''}`}
                 target="_blank"
                 rel="noopener noreferrer"
                 className="inline-flex items-center gap-1.5 text-sm text-primary hover:underline"
@@ -266,6 +272,3 @@ function extractVideoId(url: string): string {
   const match = url.match(/(?:youtube\.com\/watch\?v=|youtu\.be\/|youtube\.com\/embed\/)([^&\s]+)/);
   return match?.[1] || '';
 }
-
-// Need to import ExternalLink
-import { ExternalLink } from 'lucide-react';

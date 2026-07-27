@@ -143,7 +143,6 @@
 //     </div>
 //   );
 // }
-
 'use client';
 
 import { useState } from 'react';
@@ -170,7 +169,7 @@ function StatusDot({ status }: { status: SourceStatus }) {
 }
 
 export function SourceList() {
-  const { sources, setPreviewSource, deleteSource, renameSource, toggleSourceSelection, searchQuery } = useApp();
+  const { sources, setPreviewSource, setPreviewStartTime, deleteSource, renameSource, toggleSourceSelection, searchQuery } = useApp();
   const [editingId, setEditingId] = useState<string | null>(null);
   const [editName, setEditName] = useState('');
   const [deletingId, setDeletingId] = useState<string | null>(null);
@@ -195,6 +194,11 @@ export function SourceList() {
     setDeletingId(id);
     await deleteSource(id);
     setDeletingId(null);
+  };
+
+  const handlePreview = (source: Source) => {
+    setPreviewSource(source);
+    setPreviewStartTime(null); // Sidebar opens from the beginning
   };
 
   if (sources.length === 0) {
@@ -232,7 +236,6 @@ export function SourceList() {
               isDeleting ? 'opacity-40' : 'hover:bg-accent'
             }`}
           >
-            {/* Selection checkbox — only for indexed sources */}
             {isIndexed ? (
               <input
                 type="checkbox"
@@ -245,11 +248,11 @@ export function SourceList() {
                 title={source.selected ? 'Exclude from chat search' : 'Include in chat search'}
               />
             ) : (
-              <div className="w-3.5 shrink-0" /> // spacer for alignment
+              <div className="w-3.5 shrink-0" />
             )}
 
             <button
-              onClick={() => !isEditing && setPreviewSource(source)}
+              onClick={() => !isEditing && handlePreview(source)}
               disabled={isDeleting}
               className="flex flex-1 items-center gap-2.5 min-w-0 text-left disabled:cursor-not-allowed"
             >

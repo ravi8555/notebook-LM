@@ -174,7 +174,6 @@
 //   if (!ctx) throw new Error('useApp must be used within AppProvider');
 //   return ctx;
 // }
-
 'use client';
 
 import React, { createContext, useContext, useState, useCallback, useEffect, useRef } from 'react';
@@ -185,10 +184,12 @@ interface AppContextType {
   sources: Source[];
   messages: ChatMessage[];
   previewSource: Source | null;
+  previewStartTime: number | null;
   isAddModalOpen: boolean;
   isLoading: boolean;
   searchQuery: string;
   setPreviewSource: (source: Source | null) => void;
+  setPreviewStartTime: (time: number | null) => void;
   setIsAddModalOpen: (open: boolean) => void;
   setSearchQuery: (query: string) => void;
   refreshSources: () => Promise<void>;
@@ -205,19 +206,17 @@ export function AppProvider({ children }: { children: React.ReactNode }) {
   const [sources, setSources] = useState<Source[]>([]);
   const [messages, setMessages] = useState<ChatMessage[]>([]);
   const [previewSource, setPreviewSource] = useState<Source | null>(null);
+  const [previewStartTime, setPreviewStartTime] = useState<number | null>(null);
   const [isAddModalOpen, setIsAddModalOpen] = useState(false);
   const [isLoading, setIsLoading] = useState(false);
   const [searchQuery, setSearchQuery] = useState('');
   const selectedIdsRef = useRef<Set<string>>(new Set());
   const prevSourcesRef = useRef<Source[]>([]);
 
-  // Load persisted selections once on mount
   useEffect(() => {
     try {
       const saved = localStorage.getItem('selected-source-ids');
-      if (saved) {
-        selectedIdsRef.current = new Set(JSON.parse(saved));
-      }
+      if (saved) selectedIdsRef.current = new Set(JSON.parse(saved));
     } catch { /* ignore */ }
   }, []);
 
@@ -227,19 +226,11 @@ export function AppProvider({ children }: { children: React.ReactNode }) {
       if (res.ok) {
         const data = await res.json();
         const fetched: Source[] = Array.isArray(data.sources) ? data.sources : [];
-
-        // First load: auto-select all indexed sources if nothing saved yet
         if (selectedIdsRef.current.size === 0) {
-          fetched.forEach((s) => {
-            if (s.status === 'indexed') selectedIdsRef.current.add(s.id);
-          });
+          fetched.forEach((s) => { if (s.status === 'indexed') selectedIdsRef.current.add(s.id); });
           localStorage.setItem('selected-source-ids', JSON.stringify([...selectedIdsRef.current]));
         }
-
-        setSources(fetched.map((s) => ({
-          ...s,
-          selected: selectedIdsRef.current.has(s.id),
-        })));
+        setSources(fetched.map((s) => ({ ...s, selected: selectedIdsRef.current.has(s.id) })));
       }
     } catch (err) {
       console.error('Failed to fetch sources:', err);
@@ -252,31 +243,22 @@ export function AppProvider({ children }: { children: React.ReactNode }) {
     return () => clearInterval(interval);
   }, [refreshSources]);
 
-  // Auto-select newly indexed sources + toast completion
   useEffect(() => {
     const prevSources = prevSourcesRef.current;
     let changed = false;
     const nextIds = new Set(selectedIdsRef.current);
-
     sources.forEach((source) => {
       const prev = prevSources.find((s) => s.id === source.id);
       if (source.status === 'indexed' && prev?.status !== 'indexed') {
         toast.success(`"${source.name}" indexed successfully`);
-        if (!nextIds.has(source.id)) {
-          nextIds.add(source.id);
-          changed = true;
-        }
+        if (!nextIds.has(source.id)) { nextIds.add(source.id); changed = true; }
       }
     });
-
     if (changed) {
       selectedIdsRef.current = nextIds;
       localStorage.setItem('selected-source-ids', JSON.stringify([...nextIds]));
-      setSources((prev) =>
-        prev.map((s) => ({ ...s, selected: nextIds.has(s.id) }))
-      );
+      setSources((prev) => prev.map((s) => ({ ...s, selected: nextIds.has(s.id) })));
     }
-
     prevSourcesRef.current = sources;
   }, [sources]);
 
@@ -288,23 +270,17 @@ export function AppProvider({ children }: { children: React.ReactNode }) {
 
       if (selectedIndexedIds.length === 0) {
         toast.error('Select at least one source to chat');
-        setMessages((prev) =>
-          prev.map((m) =>
-            m.id === assistantId
-              ? { ...m, content: 'No sources selected. Please check at least one source in the sidebar.' }
-              : m
-          )
-        );
+        setMessages((prev) => prev.map((m) => m.id === assistantId
+          ? { ...m, content: 'No sources selected. Please check at least one source in the sidebar.' }
+          : m
+        ));
         return;
       }
 
       const res = await fetch('/api/chat', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({
-          question,
-          sourceIds: selectedIndexedIds,
-        }),
+        body: JSON.stringify({ question, sourceIds: selectedIndexedIds }),
       });
 
       if (!res.ok) {
@@ -312,20 +288,26 @@ export function AppProvider({ children }: { children: React.ReactNode }) {
         throw new Error(errorData.error || 'Request failed');
       }
 
+      // Parse sources from header
       const sourcesHeader = res.headers.get('x-sources');
-      if (sourcesHeader) {
-        const rawSources = JSON.parse(sourcesHeader);
-        const parsedSources: SourceReference[] = rawSources.map((s: any) => ({
-          sourceId: s.lessonId,
-          name: s.lesson,
-          start: s.start,
-          end: s.end,
-        }));
-        setMessages((prev) =>
-          prev.map((m) =>
-            m.id === assistantId ? { ...m, sources: parsedSources } : m
-          )
-        );
+      console.log('📎 x-sources header:', sourcesHeader);
+
+      if (sourcesHeader && sourcesHeader !== '[]') {
+        try {
+          const rawSources = JSON.parse(sourcesHeader);
+          const parsedSources: SourceReference[] = rawSources.map((s: any) => ({
+            sourceId: s.lessonId,
+            name: s.lesson,
+            start: s.start,
+            end: s.end,
+          }));
+          console.log('📎 Parsed sources:', parsedSources);
+          setMessages((prev) => prev.map((m) => m.id === assistantId ? { ...m, sources: parsedSources } : m));
+        } catch (e) {
+          console.error('Failed to parse x-sources header:', e);
+        }
+      } else {
+        console.warn('⚠️ No sources in header');
       }
 
       const reader = res.body?.getReader();
@@ -336,43 +318,23 @@ export function AppProvider({ children }: { children: React.ReactNode }) {
         const { done, value } = await reader.read();
         if (done) break;
         const chunk = decoder.decode(value, { stream: true });
-
-        setMessages((prev) =>
-          prev.map((m) =>
-            m.id === assistantId ? { ...m, content: m.content + chunk } : m
-          )
-        );
+        setMessages((prev) => prev.map((m) => m.id === assistantId ? { ...m, content: m.content + chunk } : m));
       }
     } catch (err: any) {
       toast.error('Failed to send message');
-      setMessages((prev) =>
-        prev.map((m) =>
-          m.id === assistantId
-            ? { ...m, content: 'Sorry, something went wrong. Please try again.' }
-            : m
-        )
-      );
+      setMessages((prev) => prev.map((m) => m.id === assistantId
+        ? { ...m, content: 'Sorry, something went wrong. Please try again.' }
+        : m
+      ));
     }
   }, [sources]);
 
   const sendMessage = useCallback(async (content: string) => {
-    const userMsg: ChatMessage = {
-      id: crypto.randomUUID(),
-      role: 'user',
-      content,
-      createdAt: new Date().toISOString(),
-    };
+    const userMsg: ChatMessage = { id: crypto.randomUUID(), role: 'user', content, createdAt: new Date().toISOString() };
     setMessages((prev) => [...prev, userMsg]);
 
     const assistantId = crypto.randomUUID();
-    const assistantMsg: ChatMessage = {
-      id: assistantId,
-      role: 'assistant',
-      content: '',
-      sources: [],
-      createdAt: new Date().toISOString(),
-    };
-    setMessages((prev) => [...prev, assistantMsg]);
+    setMessages((prev) => [...prev, { id: assistantId, role: 'assistant', content: '', sources: [], createdAt: new Date().toISOString() }]);
     setIsLoading(true);
 
     await streamChat(content, assistantId);
@@ -382,31 +344,17 @@ export function AppProvider({ children }: { children: React.ReactNode }) {
   const regenerateMessage = useCallback(async (assistantMessageId: string) => {
     const assistantIndex = messages.findIndex((m) => m.id === assistantMessageId);
     if (assistantIndex === -1) return;
-
     let userIndex = -1;
     for (let i = assistantIndex - 1; i >= 0; i--) {
-      if (messages[i].role === 'user') {
-        userIndex = i;
-        break;
-      }
+      if (messages[i].role === 'user') { userIndex = i; break; }
     }
     if (userIndex === -1) return;
 
     const userContent = messages[userIndex].content;
-
     setMessages((prev) => prev.slice(0, assistantIndex));
 
     const newAssistantId = crypto.randomUUID();
-    setMessages((prev) => [
-      ...prev,
-      {
-        id: newAssistantId,
-        role: 'assistant',
-        content: '',
-        sources: [],
-        createdAt: new Date().toISOString(),
-      },
-    ]);
+    setMessages((prev) => [...prev, { id: newAssistantId, role: 'assistant', content: '', sources: [], createdAt: new Date().toISOString() }]);
     setIsLoading(true);
 
     await streamChat(userContent, newAssistantId);
@@ -415,64 +363,35 @@ export function AppProvider({ children }: { children: React.ReactNode }) {
 
   const toggleSourceSelection = useCallback((id: string) => {
     const next = new Set(selectedIdsRef.current);
-    if (next.has(id)) {
-      next.delete(id);
-    } else {
-      next.add(id);
-    }
+    next.has(id) ? next.delete(id) : next.add(id);
     selectedIdsRef.current = next;
     localStorage.setItem('selected-source-ids', JSON.stringify([...next]));
-
-    setSources((prev) =>
-      prev.map((s) => (s.id === id ? { ...s, selected: next.has(s.id) } : s))
-    );
+    setSources((prev) => prev.map((s) => s.id === id ? { ...s, selected: next.has(s.id) } : s));
   }, []);
 
   return (
     <AppContext.Provider
       value={{
-        sources,
-        messages,
-        previewSource,
-        isAddModalOpen,
-        isLoading,
-        searchQuery,
-        setPreviewSource,
-        setIsAddModalOpen,
-        setSearchQuery,
-        sendMessage,
-        regenerateMessage,
-        toggleSourceSelection,
-        refreshSources,
+        sources, messages, previewSource, previewStartTime, isAddModalOpen, isLoading, searchQuery,
+        setPreviewSource, setPreviewStartTime, setIsAddModalOpen, setSearchQuery,
+        sendMessage, regenerateMessage, toggleSourceSelection, refreshSources,
         deleteSource: async (id) => {
           const source = sources.find((s) => s.id === id);
           setSources((prev) => prev.filter((s) => s.id !== id));
           if (previewSource?.id === id) setPreviewSource(null);
-
           try {
             await fetch(`/api/sources/${id}`, { method: 'DELETE' });
             toast.success(`"${source?.name}" deleted`);
             await refreshSources();
-          } catch (err) {
-            toast.error('Failed to delete source');
-            console.error(err);
-            await refreshSources();
-          }
+          } catch (err) { toast.error('Failed to delete source'); await refreshSources(); }
         },
         renameSource: async (id, name) => {
           try {
-            const res = await fetch(`/api/sources/${id}`, {
-              method: 'PATCH',
-              headers: { 'Content-Type': 'application/json' },
-              body: JSON.stringify({ name }),
-            });
+            const res = await fetch(`/api/sources/${id}`, { method: 'PATCH', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify({ name }) });
             if (!res.ok) throw new Error('Rename failed');
             toast.success('Source renamed');
             await refreshSources();
-          } catch (err) {
-            toast.error('Failed to rename source');
-            throw err;
-          }
+          } catch (err) { toast.error('Failed to rename source'); throw err; }
         },
       }}
     >
