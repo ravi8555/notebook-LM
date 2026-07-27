@@ -122,53 +122,71 @@ export class QdrantVectorStore implements VectorStore {
 }
 
   async createCollection() {
-
     const collections = await this.client.getCollections();
-
     const exists = collections.collections.some(
-      c => c.name === this.collectionName
+      (c) => c.name === this.collectionName
     );
 
     if (exists) {
-      console.log("Collection already exists.");
+      console.log('Collection already exists.');
+      // Ensure indexes exist even if collection was created before
+      await this.ensurePayloadIndexes();
       return;
     }
 
     await this.client.createCollection(this.collectionName, {
       vectors: {
         size: 1536,
-        distance: "Cosine",
+        distance: 'Cosine',
       },
     });
 
-    console.log("Collection created.");
+    console.log('Collection created.');
+
+    // Create payload indexes for filtering
+    await this.ensurePayloadIndexes();
   }
 
   async recreateCollection(): Promise<void> {
-
-    const collections =
-        await this.client.getCollections();
-
-    const exists =
-        collections.collections.some(
-            c => c.name === this.collectionName
-        );
+    const collections = await this.client.getCollections();
+    const exists = collections.collections.some(
+      (c) => c.name === this.collectionName
+    );
 
     if (exists) {
-
-        console.log("🗑️ Deleting existing collection...");
-
-        await this.client.deleteCollection(
-            this.collectionName
-        );
-
+      console.log('🗑️ Deleting existing collection...');
+      await this.client.deleteCollection(this.collectionName);
     }
 
-    console.log("📦 Creating collection...");
+    console.log('📦 Creating collection...');
+    await this.createCollection(); // This now also creates indexes
+  }
 
-    await this.createCollection();
+  private async ensurePayloadIndexes() {
+    const indexesToCreate = [
+      { fieldName: 'metadata.courseId', fieldType: 'keyword' as const },
+      { fieldName: 'metadata.lessonId', fieldType: 'keyword' as const },
+    ];
 
-}
+    for (const { fieldName, fieldType } of indexesToCreate) {
+      try {
+        await this.client.createPayloadIndex(this.collectionName, {
+          field_name: fieldName,
+          field_schema: fieldType,
+        });
+        console.log(`✅ Index created: ${fieldName}`);
+      } catch (err: any) {
+        // Index may already exist — ignore that error
+        if (err.status === 409 || err.message?.includes('already exists')) {
+          console.log(`ℹ️ Index already exists: ${fieldName}`);
+        } else {
+          console.warn(`⚠️ Failed to create index ${fieldName}:`, err.message);
+        }
+      }
+    }
+  }
+
+  
  
 
   async search(

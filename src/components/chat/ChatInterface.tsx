@@ -65,12 +65,12 @@ export function ChatInterface() {
             {messages.map((msg) => (
               <ChatMessage key={msg.id} message={msg} />
             ))}
-            {isLoading && (
+                       {isLoading && (
               <div className="flex items-center gap-3 text-muted-foreground pl-12">
                 <div className="flex h-6 w-6 items-center justify-center rounded-full bg-muted">
                   <Loader2 className="h-3 w-3 animate-spin" />
                 </div>
-                <span className="text-sm">Thinking...</span>
+                <span className="text-sm">Searching sources...</span>
               </div>
             )}
           </div>
