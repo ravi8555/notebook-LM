@@ -1,9 +1,9 @@
-// 'use client';
+'use client';
 
 import { useState } from 'react';
 import { useApp } from '@/lib/context/AppContext';
 import { SourceType } from '@/types/source';
-import { FileText, Youtube, Type, Subtitles, Link2, X, Upload } from 'lucide-react';
+import { FileText, Youtube, Type, Subtitles, Link2, X, Upload, AlertCircle } from 'lucide-react';
 
 
 const sourceTypes: { type: SourceType; label: string; icon: React.ElementType; desc: string }[] = [
@@ -14,6 +14,14 @@ const sourceTypes: { type: SourceType; label: string; icon: React.ElementType; d
   { type: 'weblink', label: 'Web Link', icon: Link2, desc: 'Paste a website URL' },
 ];
 
+function isYouTubeUrl(url: string): boolean {
+  return /(?:youtube\.com\/(?:watch\?v=|embed\/|shorts\/)|youtu\.be\/)([a-zA-Z0-9_-]{11})/.test(url);
+}
+
+function extractYouTubeId(url: string): string | null {
+  const match = url.match(/(?:youtube\.com\/(?:watch\?v=|embed\/|shorts\/)|youtu\.be\/)([a-zA-Z0-9_-]{11})/);
+  return match?.[1] || null;
+}
 export function AddSourceModal() {
   const { setIsAddModalOpen, refreshSources } = useApp();
   const [selectedType, setSelectedType] = useState<SourceType | null>(null);
@@ -22,10 +30,53 @@ export function AddSourceModal() {
   const [url, setUrl] = useState('');
   const [file, setFile] = useState<File | null>(null);
   const [isUploading, setIsUploading] = useState(false);
+  const [urlError, setUrlError] = useState('');
+
+  const validateUrl = (value: string, type: SourceType): string => {
+    if (!value.trim()) return 'URL is required';
+    
+    try {
+      new URL(value);
+    } catch {
+      return 'Please enter a valid URL';
+    }
+
+    if (type === 'youtube') {
+      if (!isYouTubeUrl(value)) {
+        return 'Please enter a valid YouTube URL (e.g., youtube.com/watch?v=... or youtu.be/...)';
+      }
+      const id = extractYouTubeId(value);
+      if (!id || id.length !== 11) {
+        return 'Could not extract YouTube video ID from this URL';
+      }
+    }
+
+    if (type === 'weblink' && isYouTubeUrl(value)) {
+      return 'This looks like a YouTube link. Please use "YT Link" instead for better results.';
+    }
+
+    return '';
+  };
+
+  const handleUrlChange = (value: string) => {
+    setUrl(value);
+    if (selectedType) {
+      setUrlError(validateUrl(value, selectedType));
+    }
+  };
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     if (!selectedType) return;
+
+    // Final validation
+    if ((selectedType === 'youtube' || selectedType === 'weblink') && url) {
+      const error = validateUrl(url, selectedType);
+      if (error) {
+        setUrlError(error);
+        return;
+      }
+    }
 
     setIsUploading(true);
     const formData = new FormData();
@@ -48,6 +99,7 @@ export function AddSourceModal() {
       setContent('');
       setUrl('');
       setFile(null);
+      setUrlError('');
     } catch (err) {
       alert('Failed to add source. Check console.');
     } finally {
@@ -129,15 +181,34 @@ export function AddSourceModal() {
 
             {(selectedType === 'youtube' || selectedType === 'weblink') && (
               <div>
-                <label className="text-sm font-medium mb-1.5 block">URL</label>
+                <label className="text-sm font-medium mb-1.5 block">
+                  {selectedType === 'youtube' ? 'YouTube URL' : 'Website URL'}
+                </label>
                 <input
                   type="url"
                   value={url}
-                  onChange={(e) => setUrl(e.target.value)}
-                  placeholder={selectedType === 'youtube' ? 'https://youtube.com/watch?v=...' : 'https://example.com'}
-                  className="w-full rounded-lg border bg-background px-3 py-2 text-sm outline-none focus:ring-2 focus:ring-primary"
+                  onChange={(e) => handleUrlChange(e.target.value)}
+                  placeholder={
+                    selectedType === 'youtube'
+                      ? 'https://youtube.com/watch?v=...'
+                      : 'https://example.com/article'
+                  }
+                  className={`w-full rounded-lg border bg-background px-3 py-2 text-sm outline-none focus:ring-2 focus:ring-primary ${
+                    urlError ? 'border-red-500 focus:ring-red-500' : ''
+                  }`}
                   required
                 />
+                {urlError && (
+                  <div className="flex items-center gap-1.5 mt-1.5 text-red-400 text-xs">
+                    <AlertCircle className="h-3 w-3" />
+                    {urlError}
+                  </div>
+                )}
+                {selectedType === 'youtube' && !urlError && url && (
+                  <div className="mt-1.5 text-xs text-emerald-500">
+                    ✓ Valid YouTube video ID: {extractYouTubeId(url)}
+                  </div>
+                )}
               </div>
             )}
 
@@ -158,14 +229,14 @@ export function AddSourceModal() {
             <div className="flex gap-3 pt-2">
               <button
                 type="button"
-                onClick={() => setSelectedType(null)}
+                onClick={() => { setSelectedType(null); setUrlError(''); }}
                 className="rounded-lg border px-4 py-2 text-sm font-medium hover:bg-accent"
               >
                 Back
               </button>
               <button
                 type="submit"
-                disabled={isUploading}
+                disabled={isUploading || !!urlError}
                 className="flex-1 rounded-lg bg-primary text-primary-foreground px-4 py-2 text-sm font-medium hover:opacity-90 disabled:opacity-50"
               >
                 {isUploading ? 'Uploading...' : 'Add Source'}

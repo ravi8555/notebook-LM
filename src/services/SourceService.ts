@@ -25,6 +25,15 @@ export class SourceService {
     await fs.mkdir(UPLOAD_DIR, { recursive: true });
   }
 
+  private isYouTubeUrl(url: string): boolean {
+    return /(?:youtube\.com\/(?:watch\?v=|embed\/|shorts\/)|youtu\.be\/)([a-zA-Z0-9_-]{11})/.test(url);
+  }
+
+  private extractYouTubeId(url: string): string | null {
+    const match = url.match(/(?:youtube\.com\/(?:watch\?v=|embed\/|shorts\/)|youtu\.be\/)([a-zA-Z0-9_-]{11})/);
+    return match?.[1] || null;
+  }
+
   async getAll(): Promise<Source[]> {
     const res = await query('SELECT * FROM sources ORDER BY created_at DESC');
     return res.rows.map(this.rowToSource);
@@ -43,6 +52,17 @@ export class SourceService {
     fileBuffer?: Buffer,
     originalName?: string
   ): Promise<Source> {
+    let correctedType = type;
+    if (url) {
+    const isYT = this.isYouTubeUrl(url);
+    if (isYT && type !== 'youtube') {
+      console.log(`🔧 Auto-corrected ${type} → youtube for URL: ${url}`);
+      correctedType = 'youtube';
+    } else if (!isYT && type === 'youtube') {
+      console.log(`🔧 URL is not YouTube, switching ${type} → weblink`);
+      correctedType = 'weblink';
+    }
+  }
     const id = uuid();
     const courseId = `course-${id}`;
     let filePath: string | undefined;
@@ -155,19 +175,27 @@ export class SourceService {
       let lessonFilePath = source.filePath || '';
       let lessonSource: 'srt' | 'vtt' = 'srt';
 
-      // PDF: extract text → SRT
+      // YouTube: validate ID first, fallback to weblink if invalid
+      if (source.type === 'youtube' && source.url) {
+        const videoId = this.extractYouTubeId(source.url);
+        if (!videoId) {
+          console.warn('⚠️ Invalid YouTube URL, falling back to web scraping');
+          source.type = 'weblink'; // mutate for this flow
+        }
+      }
+
+      // PDF → SRT
       if (source.type === 'pdf' && lessonFilePath) {
         const pdfParse = await import('pdf-parse');
         const buffer = await fs.readFile(lessonFilePath);
         const pdfData = await pdfParse.default(buffer);
-        
         const srtPath = path.join(UPLOAD_DIR, `${source.id}.srt`);
         await this.textToSrt(pdfData.text, srtPath);
         lessonFilePath = srtPath;
         lessonSource = 'srt';
       }
 
-      // Text: convert to SRT
+      // Text → SRT
       else if (source.type === 'text' && lessonFilePath) {
         const text = await fs.readFile(lessonFilePath, 'utf8');
         const srtPath = path.join(UPLOAD_DIR, `${source.id}.srt`);
@@ -176,7 +204,7 @@ export class SourceService {
         lessonSource = 'srt';
       }
 
-      // Weblink: fetch → SRT
+      // Weblink → fetch → SRT
       else if (source.type === 'weblink' && source.url) {
         const text = await this.fetchWebPage(source.url);
         const srtPath = path.join(UPLOAD_DIR, `${source.id}.srt`);
@@ -185,7 +213,7 @@ export class SourceService {
         lessonSource = 'srt';
       }
 
-      // YouTube: fetch transcript → SRT
+      // YouTube → transcript → SRT
       else if (source.type === 'youtube' && source.url) {
         const srtPath = path.join(UPLOAD_DIR, `${source.id}.srt`);
         await this.extractYouTubeTranscript(source.url, srtPath);
@@ -193,7 +221,7 @@ export class SourceService {
         lessonSource = 'srt';
       }
 
-      // VTT/SRT upload: use directly
+      // VTT/SRT upload → use directly
       else if (source.type === 'vtt' && lessonFilePath) {
         const ext = path.extname(lessonFilePath).toLowerCase();
         lessonSource = ext === '.vtt' ? 'vtt' : 'srt';
@@ -224,7 +252,6 @@ export class SourceService {
       await this.updateStatus(source.id, 'error', err.message);
     }
   }
-
   private async textToSrt(text: string, outPath: string) {
     const words = text.split(/\s+/).filter(Boolean);
     if (words.length === 0) throw new Error('No text content to index');
@@ -254,6 +281,11 @@ export class SourceService {
     try {
       const { YoutubeTranscript } = await import('youtube-transcript');
       const transcript = await YoutubeTranscript.fetchTranscript(url);
+      
+      if (!transcript || transcript.length === 0) {
+        throw new Error('No transcript available for this video');
+      }
+
       const segments: string[] = [];
       transcript.forEach((item: any, idx: number) => {
         const start = this.secondsToSrtTime(item.offset / 1000);
@@ -261,9 +293,13 @@ export class SourceService {
         segments.push(`${idx + 1}\n${start} --> ${end}\n${item.text}\n`);
       });
       await fs.writeFile(outPath, segments.join('\n'));
-    } catch {
-      await fs.writeFile(outPath, `1\n00:00:00,000 --> 00:00:05,000\nFailed to fetch YouTube transcript.\n`);
-      throw new Error('YouTube transcript fetch failed');
+    } catch (err: any) {
+      // Write a placeholder so the file exists, but mark as error
+      await fs.writeFile(
+        outPath,
+        `1\n00:00:00,000 --> 00:00:05,000\nFailed to fetch YouTube transcript: ${err.message}\n`
+      );
+      throw new Error(`YouTube transcript failed: ${err.message}`);
     }
   }
 
