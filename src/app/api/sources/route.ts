@@ -29,7 +29,7 @@ async function ensureCollection() {
 }
 
 export async function GET() {
-  return NextResponse.json({ sources: sourceService.getAll() });
+  return NextResponse.json({ sources: await sourceService.getAll() });
 }
 
 export async function POST(req: NextRequest) {

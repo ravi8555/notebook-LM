@@ -33,7 +33,8 @@ export function AppProvider({ children }: { children: React.ReactNode }) {
       const res = await fetch('/api/sources');
       if (res.ok) {
         const data = await res.json();
-        setSources(data.sources);
+        setSources(Array.isArray(data.sources) ? data.sources : []);
+        // setSources(data.sources);
       }
     } catch (err) {
       console.error('Failed to fetch sources:', err);
