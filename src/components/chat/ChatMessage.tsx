@@ -1,20 +1,28 @@
 'use client';
-// src/components/chat/ChatMessage.tsx
+// // src/components/chat/ChatMessage.tsx
+
 
 // import { ChatMessage as ChatMessageType } from '@/types/source';
 // import { useApp } from '@/lib/context/AppContext';
-// import { User, Bot, FileText, ExternalLink, Clock, Hash } from 'lucide-react';
+// import { User, Bot, FileText, Youtube, Type, Link2, Subtitles, Clock, Hash, ExternalLink } from 'lucide-react';
 
 // interface Props {
 //   message: ChatMessageType;
 // }
+
+// const typeIcons: Record<string, React.ElementType> = {
+//   pdf: FileText,
+//   youtube: Youtube,
+//   text: Type,
+//   vtt: Subtitles,
+//   weblink: Link2,
+// };
 
 // export function ChatMessage({ message }: Props) {
 //   const { setPreviewSource, sources } = useApp();
 //   const isUser = message.role === 'user';
 
 //   const handleSourceClick = (sourceId: string) => {
-//     // backend sends lessonId = "lesson-<source.id>"
 //     const id = sourceId.replace('lesson-', '');
 //     const source = sources.find((s) => s.id === id);
 //     if (source) setPreviewSource(source);
@@ -35,9 +43,9 @@
 //         {isUser ? <User className="h-4 w-4" /> : <Bot className="h-4 w-4" />}
 //       </div>
 
-//       <div className={`flex-1 space-y-3 ${isUser ? 'items-end' : ''}`}>
+//       <div className={`flex-1 space-y-3 ${isUser ? 'text-right' : ''}`}>
 //         <div
-//           className={`inline-block max-w-full rounded-2xl px-5 py-3 text-sm leading-relaxed ${
+//           className={`inline-block max-w-[85%] rounded-2xl px-5 py-3 text-sm leading-relaxed text-left ${
 //             isUser
 //               ? 'bg-primary text-primary-foreground rounded-tr-sm'
 //               : 'bg-muted rounded-tl-sm'
@@ -50,42 +58,31 @@
 //           <div className="flex flex-wrap gap-2">
 //             {message.sources.map((source) => {
 //               const meta = getSourceMeta(source.sourceId);
-//               const isVideo = meta?.type === 'youtube' || meta?.type === 'vtt' || meta?.type === 'srt';
-              
+//               const isVideo = meta?.type === 'youtube' || meta?.type === 'vtt';
+//               const SourceIcon = meta?.type ? typeIcons[meta.type] || FileText : FileText;
+
 //               return (
 //                 <button
 //                   key={`${source.sourceId}-${source.start}`}
 //                   onClick={() => handleSourceClick(source.sourceId)}
-//                   className="inline-flex items-center gap-1.5 rounded-full border bg-background px-3 py-1.5 text-xs font-medium transition hover:bg-accent hover:border-primary"
+//                   className="group inline-flex items-center gap-1.5 rounded-full border bg-background/80 backdrop-blur-sm px-3 py-1.5 text-xs font-medium transition hover:bg-accent hover:border-primary hover:shadow-sm"
 //                 >
-//                   <FileText className="h-3 w-3" />
-//                   <span className="truncate max-w-[140px]">{source.name}</span>
-
-//                   {isVideo ? (
-//     <>
-//       <Clock className="h-3 w-3" />
-//       {formatTime(source.start)} - {formatTime(source.end)}
-//     </>
-//   ) : (
-//     <>
-//       <Hash className="h-3 w-3" />
-//       Chunk {Math.floor(source.start / 10) + 1}
-//     </>
-//   )}
+//                   <SourceIcon className="h-3 w-3 text-muted-foreground group-hover:text-foreground" />
+//                   <span className="max-w-[120px] truncate">{source.name}</span>
                   
-//                   {/* {isVideo ? (
-//                     <span className="text-muted-foreground flex items-center gap-0.5">
+//                   {isVideo ? (
+//                     <span className="text-muted-foreground flex items-center gap-0.5 tabular-nums">
 //                       <Clock className="h-3 w-3" />
-//                       {formatTime(source.start)} - {formatTime(source.end)}
+//                       {formatTime(source.start)}
 //                     </span>
 //                   ) : (
-//                     <span className="text-muted-foreground flex items-center gap-0.5">
+//                     <span className="text-muted-foreground flex items-center gap-0.5 tabular-nums">
 //                       <Hash className="h-3 w-3" />
 //                       {Math.floor(source.start / 10) + 1}
 //                     </span>
-//                   )} */}
+//                   )}
                   
-//                   <ExternalLink className="h-3 w-3 text-muted-foreground" />
+//                   <ExternalLink className="h-3 w-3 text-muted-foreground opacity-0 group-hover:opacity-100 transition-opacity" />
 //                 </button>
 //               );
 //             })}
@@ -102,11 +99,26 @@
 //   return `${m}:${String(s).padStart(2, '0')}`;
 // }
 
-'use client';
 
+
+import { useState } from 'react';
 import { ChatMessage as ChatMessageType } from '@/types/source';
 import { useApp } from '@/lib/context/AppContext';
-import { User, Bot, FileText, Youtube, Type, Link2, Subtitles, Clock, Hash, ExternalLink } from 'lucide-react';
+import {
+  User,
+  Bot,
+  FileText,
+  Youtube,
+  Type,
+  Link2,
+  Subtitles,
+  Clock,
+  Hash,
+  ExternalLink,
+  Copy,
+  Check,
+  RefreshCw,
+} from 'lucide-react';
 
 interface Props {
   message: ChatMessageType;
@@ -121,8 +133,9 @@ const typeIcons: Record<string, React.ElementType> = {
 };
 
 export function ChatMessage({ message }: Props) {
-  const { setPreviewSource, sources } = useApp();
+  const { setPreviewSource, sources, regenerateMessage } = useApp();
   const isUser = message.role === 'user';
+  const [copied, setCopied] = useState(false);
 
   const handleSourceClick = (sourceId: string) => {
     const id = sourceId.replace('lesson-', '');
@@ -133,6 +146,17 @@ export function ChatMessage({ message }: Props) {
   const getSourceMeta = (sourceId: string) => {
     const id = sourceId.replace('lesson-', '');
     return sources.find((s) => s.id === id);
+  };
+
+  const handleCopy = async () => {
+    if (!message.content) return;
+    await navigator.clipboard.writeText(message.content);
+    setCopied(true);
+    setTimeout(() => setCopied(false), 2000);
+  };
+
+  const handleRegenerate = () => {
+    regenerateMessage(message.id);
   };
 
   return (
@@ -171,7 +195,7 @@ export function ChatMessage({ message }: Props) {
                 >
                   <SourceIcon className="h-3 w-3 text-muted-foreground group-hover:text-foreground" />
                   <span className="max-w-[120px] truncate">{source.name}</span>
-                  
+
                   {isVideo ? (
                     <span className="text-muted-foreground flex items-center gap-0.5 tabular-nums">
                       <Clock className="h-3 w-3" />
@@ -183,11 +207,34 @@ export function ChatMessage({ message }: Props) {
                       {Math.floor(source.start / 10) + 1}
                     </span>
                   )}
-                  
+
                   <ExternalLink className="h-3 w-3 text-muted-foreground opacity-0 group-hover:opacity-100 transition-opacity" />
                 </button>
               );
             })}
+          </div>
+        )}
+
+        {/* Copy + Regenerate action bar */}
+        {!isUser && message.content && (
+          <div className="flex items-center gap-1 pl-1">
+            <button
+              onClick={handleCopy}
+              className="inline-flex items-center gap-1.5 rounded-md px-2 py-1 text-xs text-muted-foreground transition hover:bg-accent hover:text-foreground"
+              title="Copy to clipboard"
+            >
+              {copied ? <Check className="h-3 w-3 text-emerald-500" /> : <Copy className="h-3 w-3" />}
+              <span>{copied ? 'Copied!' : 'Copy'}</span>
+            </button>
+
+            <button
+              onClick={handleRegenerate}
+              className="inline-flex items-center gap-1.5 rounded-md px-2 py-1 text-xs text-muted-foreground transition hover:bg-accent hover:text-foreground"
+              title="Regenerate response"
+            >
+              <RefreshCw className="h-3 w-3" />
+              <span>Regenerate</span>
+            </button>
           </div>
         )}
       </div>
