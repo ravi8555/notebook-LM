@@ -188,10 +188,12 @@ interface AppContextType {
   isAddModalOpen: boolean;
   isLoading: boolean;
   searchQuery: string;
+  sidebarOpen: boolean;
   setPreviewSource: (source: Source | null) => void;
   setPreviewStartTime: (time: number | null) => void;
   setIsAddModalOpen: (open: boolean) => void;
   setSearchQuery: (query: string) => void;
+  setSidebarOpen: (open: boolean) => void;
   refreshSources: () => Promise<void>;
   sendMessage: (content: string) => Promise<void>;
   regenerateMessage: (assistantMessageId: string) => Promise<void>;
@@ -210,6 +212,7 @@ export function AppProvider({ children }: { children: React.ReactNode }) {
   const [isAddModalOpen, setIsAddModalOpen] = useState(false);
   const [isLoading, setIsLoading] = useState(false);
   const [searchQuery, setSearchQuery] = useState('');
+  const [sidebarOpen, setSidebarOpen] = useState(false);
   const selectedIdsRef = useRef<Set<string>>(new Set());
   const prevSourcesRef = useRef<Source[]>([]);
 
@@ -288,10 +291,7 @@ export function AppProvider({ children }: { children: React.ReactNode }) {
         throw new Error(errorData.error || 'Request failed');
       }
 
-      // Parse sources from header
       const sourcesHeader = res.headers.get('x-sources');
-      console.log('📎 x-sources header:', sourcesHeader);
-
       if (sourcesHeader && sourcesHeader !== '[]') {
         try {
           const rawSources = JSON.parse(sourcesHeader);
@@ -301,13 +301,10 @@ export function AppProvider({ children }: { children: React.ReactNode }) {
             start: s.start,
             end: s.end,
           }));
-          console.log('📎 Parsed sources:', parsedSources);
           setMessages((prev) => prev.map((m) => m.id === assistantId ? { ...m, sources: parsedSources } : m));
         } catch (e) {
           console.error('Failed to parse x-sources header:', e);
         }
-      } else {
-        console.warn('⚠️ No sources in header');
       }
 
       const reader = res.body?.getReader();
@@ -332,11 +329,9 @@ export function AppProvider({ children }: { children: React.ReactNode }) {
   const sendMessage = useCallback(async (content: string) => {
     const userMsg: ChatMessage = { id: crypto.randomUUID(), role: 'user', content, createdAt: new Date().toISOString() };
     setMessages((prev) => [...prev, userMsg]);
-
     const assistantId = crypto.randomUUID();
     setMessages((prev) => [...prev, { id: assistantId, role: 'assistant', content: '', sources: [], createdAt: new Date().toISOString() }]);
     setIsLoading(true);
-
     await streamChat(content, assistantId);
     setIsLoading(false);
   }, [streamChat]);
@@ -349,14 +344,11 @@ export function AppProvider({ children }: { children: React.ReactNode }) {
       if (messages[i].role === 'user') { userIndex = i; break; }
     }
     if (userIndex === -1) return;
-
     const userContent = messages[userIndex].content;
     setMessages((prev) => prev.slice(0, assistantIndex));
-
     const newAssistantId = crypto.randomUUID();
     setMessages((prev) => [...prev, { id: newAssistantId, role: 'assistant', content: '', sources: [], createdAt: new Date().toISOString() }]);
     setIsLoading(true);
-
     await streamChat(userContent, newAssistantId);
     setIsLoading(false);
   }, [messages, streamChat]);
@@ -372,8 +364,9 @@ export function AppProvider({ children }: { children: React.ReactNode }) {
   return (
     <AppContext.Provider
       value={{
-        sources, messages, previewSource, previewStartTime, isAddModalOpen, isLoading, searchQuery,
-        setPreviewSource, setPreviewStartTime, setIsAddModalOpen, setSearchQuery,
+        sources, messages, previewSource, previewStartTime, isAddModalOpen, isLoading,
+        searchQuery, sidebarOpen,
+        setPreviewSource, setPreviewStartTime, setIsAddModalOpen, setSearchQuery, setSidebarOpen,
         sendMessage, regenerateMessage, toggleSourceSelection, refreshSources,
         deleteSource: async (id) => {
           const source = sources.find((s) => s.id === id);

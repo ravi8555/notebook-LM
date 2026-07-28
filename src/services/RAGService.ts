@@ -74,7 +74,6 @@
 //   }
 // }
 
-
 import { SemanticSearcher } from "../retrieval";
 import { PromptBuilder } from "../prompts";
 import { ChatService } from "../chat";
@@ -90,27 +89,26 @@ export class RAGService {
     const results = await this.searcher.search(question, filter, 10);
     const promptBuilder = new PromptBuilder();
     const prompt = promptBuilder.build(question, results);
-    
+
     const response = await this.chatService.generate([
       { role: "user", content: prompt },
     ]);
 
+    // Return ALL relevant chunks — no deduplication. Each chip is exact.
     const relevantSources = results
-      .filter((r) => r.score > 0.05) // ← lowered threshold
+      .filter((r) => r.score > 0.01)
       .sort((a, b) => b.score - a.score)
-      .filter((r, index, self) => 
-        index === self.findIndex((t) => t.chunk.lessonId === r.chunk.lessonId)
-      )
-      .slice(0, 4);
-
-    return {
-      ...response,
-      sources: relevantSources.map((r) => ({
+      .slice(0, 6)
+      .map((r) => ({
         lesson: r.chunk.metadata.lessonTitle,
         lessonId: r.chunk.lessonId,
         start: r.chunk.start,
         end: r.chunk.end,
-      })),
+      }));
+
+    return {
+      ...response,
+      sources: relevantSources,
     };
   }
 
@@ -124,20 +122,15 @@ export class RAGService {
     const prompt = promptBuilder.build(question, results);
 
     const relevantSources = results
-      .filter((r) => r.score > 0.05) // ← lowered threshold
+      .filter((r) => r.score > 0.01)
       .sort((a, b) => b.score - a.score)
-      .filter((r, index, self) => 
-        index === self.findIndex((t) => t.chunk.lessonId === r.chunk.lessonId)
-      )
-      .slice(0, 4)
+      .slice(0, 6)
       .map((r) => ({
         lesson: r.chunk.metadata.lessonTitle,
         lessonId: r.chunk.lessonId,
         start: r.chunk.start,
         end: r.chunk.end,
       }));
-
-    console.log('📎 Streaming sources:', relevantSources.length, relevantSources.map((s) => s.lesson));
 
     yield { type: 'sources', sources: relevantSources };
 
