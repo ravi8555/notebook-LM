@@ -5,7 +5,6 @@ A **NotebookLM clone** built with Next.js 14, OpenAI, and Qdrant — chat with y
 🔗 **Live Demo**: [https://sourcemindlm.portfoliohub.in/](https://sourcemindlm.portfoliohub.in/)
 
 ---
-
 ## ✨ Features
 
 | Feature | Status |
@@ -21,29 +20,55 @@ A **NotebookLM clone** built with Next.js 14, OpenAI, and Qdrant — chat with y
 | ✏️ **Rename Sources** | Inline editing |
 | 🗑️ **Delete Sources** | Removes from DB, disk, and vector store |
 | 🔍 **Multi-Source Search** | Chat searches all indexed sources |
+| ⚡ **Streaming Responses** | Real-time character-by-character text generation |
+| 📋 **Copy & Regenerate** | One-click copy or retry any AI response |
+| 🔔 **Toast Notifications** | Elegant success/error feedback via Sonner |
+| 🔎 **Sidebar Source Search** | Filter sources by name in real-time |
+| ☑️ **Multi-Source Selection** | Chat only searches checked sources |
+| ⏱️ **YouTube Timestamp Sync** | Click citations to jump to exact video time |
+| 📱 **Mobile Responsive** | Collapsible sidebar with hamburger menu |
 
 ---
 
 ## 🏗️ Architecture
 
-```
-┌─────────────────┐     ┌──────────────────┐     ┌─────────────────┐
-│   Next.js 14    │────▶│  SourceService   │────▶│   PostgreSQL    │
-│   (App Router)  │     │  (Business Logic)│     │   (Neon / Local)│
-└─────────────────┘     └──────────────────┘     └─────────────────┘
-         │                       │
-         ▼                       ▼
-┌─────────────────┐     ┌──────────────────┐
-│  React Frontend │     │  TranscriptProcessor
-│  (Tailwind CSS) │     │  → SemanticChunker
-└─────────────────┘     │  → OpenAIEmbeddingService
-                        └──────────────────┘
+```text
+                    ┌────────────────────────┐
+                    │      SourceMind LM     │
+                    └────────────┬───────────┘
                                  │
-                                 ▼
-                        ┌──────────────────┐
-                        │  QdrantVectorStore
-                        │  (Vector Search)
-                        └──────────────────┘
+             ┌───────────────────┼────────────────────┐
+             │                   │                    │
+             ▼                   ▼                    ▼
+        Knowledge          AI Processing        User Interface
+         Sources
+
+ PDF / YouTube / Web / Text / VTT
+             │
+             ▼
+      Source Processing
+             │
+             ▼
+   Transcript Processor
+             │
+             ▼
+     Semantic Chunker
+             │
+             ▼
+ OpenAI Embeddings (text-embedding-3-small)
+             │
+             ▼
+        Qdrant Vector DB
+             │
+             ▼
+      Semantic Retrieval
+             │
+             ▼
+ GPT-4.1-mini (Streaming)
+             │
+             ▼
+ AI Response + Source Citations
+```
 ```
 
 ### Data Flow
@@ -209,6 +234,121 @@ const response = await this.client.chat.completions.create({
 ```
 
 ---
+
+## 🆕 New Features Guide
+
+### ⚡ Streaming Chat Responses
+
+The chat endpoint now returns a Server-Sent Event (SSE) stream instead of a JSON blob:
+
+**Backend** (`src/chat/OpenAIChatService.ts`):
+```typescript
+const stream = await this.client.chat.completions.create({
+  model: "gpt-4.1-mini",
+  temperature: 0,
+  messages,
+  stream: true,
+});
+
+for await (const chunk of stream) {
+  const content = chunk.choices[0]?.delta?.content || "";
+  controller.enqueue(encoder.encode(content));
+}
+```
+
+**Frontend** (`src/components/chat/ChatInterface.tsx`):
+```typescript
+const response = await fetch("/api/chat", {
+  method: "POST",
+  body: JSON.stringify({ message, sourceIds: selectedSourceIds }),
+});
+
+const reader = response.body?.getReader();
+while (reader) {
+  const { done, value } = await reader.read();
+  if (done) break;
+  setStreamingText(prev => prev + decoder.decode(value));
+}
+```
+
+### 📋 Copy & Regenerate
+
+Each AI message includes action buttons:
+
+```tsx
+{!isUser && (
+  <div className="flex gap-2 mt-2">
+    <button onClick={() => navigator.clipboard.writeText(message.content)}>
+      📋 Copy
+    </button>
+    <button onClick={() => sendMessage(message.content)}>
+      🔄 Regenerate
+    </button>
+  </div>
+)}
+```
+
+### 🔔 Toast Notifications
+
+Replaces all `alert()` calls with elegant toasts:
+
+```bash
+npm install sonner
+```
+
+```tsx
+// src/app/layout.tsx
+import { Toaster } from "sonner";
+
+// Usage anywhere
+import { toast } from "sonner";
+toast.success("Source indexed successfully");
+toast.error("Failed to add source");
+```
+
+### 🔎 Sidebar Source Search
+
+Filter sources in real-time via the navbar search box:
+
+```tsx
+// Navbar.tsx
+const [searchQuery, setSearchQuery] = useState("");
+
+// SourceList.tsx
+const filtered = sources.filter(s =>
+  s.name.toLowerCase().includes(searchQuery.toLowerCase())
+);
+```
+
+### ☑️ Multi-Source Selection
+
+Checkbox next to each source restricts chat search scope:
+
+```tsx
+// types/source.ts
+export interface Source {
+  // ... existing fields
+  selected?: boolean;
+}
+
+// SourceList.tsx
+<input
+  type="checkbox"
+  checked={source.selected}
+  onChange={(e) => toggleSourceSelection(source.id, e.target.checked)}
+/>
+```
+
+### ⏱️ YouTube Timestamp Sync
+
+Clicking a citation chip opens the video at the exact timestamp:
+
+```tsx
+// SourcePreview.tsx
+<iframe
+  src={`https://www.youtube.com/embed/${videoId}?start=${Math.floor(source.start)}`}
+/>
+```
 
 ## 🌐 Deployment
 
