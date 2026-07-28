@@ -385,16 +385,41 @@ npm start
 | Source chips not clickable | Ensure `sourceId` matches between backend `lessonId` and frontend `source.id` |
 
 ---
-
 ## 🛣️ Roadmap
 
-- [ ] Multi-source selection (checkbox filter)
-- [ ] Streaming chat responses
-- [ ] PDF page number extraction (instead of chunk numbers)
-- [ ] Mobile responsive sidebar
-- [ ] Source folders/tags
-- [ ] Export chat history
-- [ ] Audio playback with transcript sync
+### Completed ✅
+
+- [x] PDF knowledge ingestion
+- [x] YouTube transcript ingestion
+- [x] Web article ingestion
+- [x] Text note ingestion
+- [x] VTT/SRT subtitle support
+- [x] Semantic chunking
+- [x] OpenAI embeddings
+- [x] Qdrant vector search
+- [x] Streaming AI responses
+- [x] Source citations
+- [x] Multi-source selection
+- [x] Source search
+- [x] Source preview
+- [x] Timestamp navigation
+- [x] Copy AI response
+- [x] Regenerate response
+- [x] Toast notifications
+- [x] Responsive mobile layout
+
+### Coming Soon 🚀
+
+- [ ] Authentication
+- [ ] Team workspaces
+- [ ] Folder & collections
+- [ ] Chat history
+- [ ] Shared knowledge bases
+- [ ] OCR for scanned PDFs
+- [ ] Audio & video uploads
+- [ ] Image understanding
+- [ ] Markdown export
+- [ ] Multiple AI model support
 
 ---
 
@@ -406,6 +431,9 @@ MIT — built for learning and portfolio demonstration.
 
 ## 🙏 Acknowledgments
 
-- [NotebookLM](https://notebooklm.google.com) for the UI inspiration
-- [Qdrant](https://qdrant.tech) for vector search
-- [OpenAI](https://openai.com) for embeddings and LLM
+- NotebookLM - for the UI inspiration
+- OpenAI — Embeddings & Language Models
+- Qdrant — Vector Database
+- Next.js — Full-stack React Framework
+- Tailwind CSS — Utility-first CSS Framework
+- shadcn/ui — Accessible UI Components
